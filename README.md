@@ -108,8 +108,9 @@ PWM 输出通道|8 通道PWM + 4 路AUX
 # 5 飞控使用教程
 ## 5.1 PCB接口说明
 
-<div align=center><img width="440" height="280" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/pcb.jpg"/></div>
+<div align=center><img width="540" height="460" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/pcb.jpg"/></div>
 <br><br>
+
 接口|说明|支持模块
 -------------|-------------|-------------
 姿态解算|互补滤波|11
@@ -135,7 +136,7 @@ a++;
 
 
 # 7 捐赠与项目后续开发计划
-如果您觉得该项目对您有帮助，也为了更好的项目推进和软硬件更新，请通过微信捐赠该项目！
+如果您觉得该项目对您有帮助，也为了更好的项目推进和软硬件更新，如果愿意请通过微信捐赠该项目！
 <div align=center><img width="240" height="300" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/pay.png"/></div>
 
 
