@@ -3,6 +3,7 @@
 # 1 项目介绍
 <div align=center><img width="150" height="150" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/fc.jpg"/></div>
 
+![Image text](https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/fc.jpg)
 
 [SDK开发演示](https://www.google.com.hk/)
 [室外GPS航向和地面站航点设置](https://www.google.com.hk/)
