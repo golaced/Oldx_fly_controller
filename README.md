@@ -2,7 +2,7 @@
 # 1 OLDX-开源多旋翼开发平台项目  
 <div align=center><img width="600" height="130" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/logo.JPG"/></div>
 <div align=center><img width="440" height="280" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/fc.jpg"/></div>
-  OLDX多旋翼开发平台（OLDX-FC）是由北京理工大学自动化学院所属极客团队开发的一个目前国内最完整的免费开源飞控项目，随着国内开源飞控的逐步发展如匿名、
+  OLDX多旋翼开发平台（OLDX-FC）是由北京理工大学自动化学院所属《北理云逸科技》团队开发的一个目前国内最完整的免费开源飞控项目，随着国内开源飞控的逐步发展如匿名、
 INF、无名和ACFly飞控的陆续推出，如光流、气压计和GPS等相关算法已经逐步完善，但是相比Pixhawk等国外开源飞控平台的发展和定位仍然太过局限很多团队仍采用
 代码拷贝淘宝二次销售的形式导致经济竞争而非技术竞争。OLDX-FC于14年开始对多旋翼飞行器进行研究期间也经历过开源和借鉴的过程，为希望进一步推动国内开源飞控协作开发和
 相互学习、相互分享的趋势，团队将该OLDX-FC转化为开源项目，采用自由捐赠的形式继续发展（[捐赠地址](https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/pay.png)。
@@ -19,7 +19,7 @@ IMAV国际微小型无人机大赛|室外赛第5名|2017
 中航工业杯|三等奖|2016
 
 **-如果该项目对您有帮助请 Star 我们的项目-**<br>
-**-如果您愿意分享对该项目的优化和改进请联系golaced@163.com或加入我们的QQ群，加速开源项目的进度-**<br>
+**-如果您愿意分享对该项目的优化和改进请联系golaced@163.com或加入我们的QQ群567423074，加速开源项目的进度-**<br>
 
 	
 # 2 基本功能介绍
@@ -113,9 +113,20 @@ PWM 输出通道|8 通道PWM + 4 路AUX
 
 接口|说明|支持模块
 -------------|-------------|-------------
-姿态解算|互补滤波|11
-
-
+飞控下载|飞控模块SWD下载口|download_fc模块
+导航下载|导航模块SWD下载口|download_stlink模块
+导航串口1|GPS和外部罗盘IIC接口|M8N Mini GPS
+导航串口5|光流传感器接口|Pixflow  OLDX-AMF
+导航串口3|超声波接口|US100
+导航串口4|预留传感器接口|
+导航CAN|预留CAN总线接口|
+飞控串口3|图像处理接口|树莓派  Odroid-XU4
+飞控串口1|数传接口|匿名数传 3DR数传  CUAV WIFI数传
+PWM1~8|电调接口|400Hz
+AUX1~4|电调9~12/舵机控制接口 1俯仰 2横滚 3投递器开关|两轴舵机云台 两轴无刷云台
+AD1~4|模拟电压采集接口|压力传感器AD(0~3.3V)
+SBUS|接收机接口|天地飞接收机 Futaba接收机
+舵机供电选择|R39外部供电 R38飞控供电  任选一|
 
 
 ## 5.2 飞控宏定义和软件配置说明
