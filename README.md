@@ -1,6 +1,6 @@
 # OLDX-开源多旋翼开发平台项目
 <div align=center><img width="600" height="130" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/logo.JPG"/></div>
-<br>
+</div><br>
 # 1 项目介绍	(如果该项目对您有帮助请 Star 我们的项目)
 <div align=center><img width="540" height="380" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/fc.jpg"/></div>
   OLDX多旋翼开发平台（OLDX-FC）是由北京理工大学自动化学院所属极客团队开发的一个目前国内最完整的免费开源飞控项目，随着国内开源飞控的逐步发展如匿名、
@@ -9,7 +9,8 @@ INF、无名和ACFly飞控的陆续推出，如光流、气压计和GPS等相关
 相互学习、相互分享的趋势，团队将该OLDX-FC转化为开源项目，采用自由捐赠的形式继续发展。项目遵循GPL协议，能自由下载项目PCB进行加工使用但请勿作为商业用途，开源所有
 飞行控制和组合导航源码，可以进行修改和二次开发。<br><br><br>
 
-**项目荣誉**<br>
+**项目荣誉**
+
 项目|奖项|年份
 -------------|-------------|-------------
 IMAV国际微小型无人机大赛|室外赛第3名  室内最佳自动化|2018
