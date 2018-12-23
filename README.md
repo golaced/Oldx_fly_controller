@@ -1,5 +1,5 @@
 # OLDX-开源多旋翼开发平台项目
-<br><br>
+<div align=center><img width="540" height="140" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/logo.jpg"/></div>
 # 1 项目介绍
 <div align=center><img width="540" height="380" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/fc.jpg"/></div>
   OLDX多旋翼开发平台（OLDX-FC）是由北京理工大学自动化学院所属极客团队开发的一个目前国内最完整的免费开源飞控项目，随着国内开源飞控的逐步发展如匿名、</div>
@@ -20,19 +20,19 @@ INF、无名和ACFly飞控的陆续推出，如光流、气压计和GPS等相关
 改进实现了基于飞行器轴距、姿态、航向和高度三通道感度和快速调参。飞控在内部封装SDK二次开发接口和部分Demo，能快速实现一键起飞降落，视觉降落，目标跟踪和自主避障，
 另外预留多个扩接口能作为地面机器人、无人车和无人船的硬件载体。飞控源码移植了Mavlink航向设置源码能实现基于Qground和MissonPlanner的任意航点、高度和速度的设置，
 基于匿名地面站能实现对飞控内部任意融合结果、传感器参数、控制反馈期望和状态信息的实时显示和参数调节，基于板载NRF2.4通讯芯片能与地面手持遥控实现最远900米
-的数据交互，实时显示飞行器经纬度、姿态，并对任意参数进行在线设定和修改，免去室外参数调节需要携带电脑和平板的不便。</div>
+的数据交互，实时显示飞行器经纬度、姿态，并对任意参数进行在线设定和修改，免去室外参数调节需要携带电脑和平板的不便。<br>
 
 <div align=center><img width="240" height="240" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/remote.png"/></div>
 
 
-**飞控特性**</div>
-	*UCosII操作系统</div>
-	*自抗扰姿态控制</div>
-	*卡尔曼组合导航</div>  
-	*SDK快速开发</div>
-	*Mavlink航向规划和匿名地面站快速调参</div>
-	*移动遥控端状态显示和参数在线修改</div>
-	*视觉导航、自动降落、光流图像定位</div>
+**飞控特性**<br>
+	*UCosII操作系统<br>
+	*自抗扰姿态控制<br>
+	*卡尔曼组合导航<br>
+	*SDK快速开发<br>
+	*Mavlink航向规划和匿名地面站快速调参<br>
+	*移动遥控端状态显示和参数在线修改<br>
+	*视觉导航、自动降落、光流图像定位<br>
 
 ***飞控性能演示视频连接：***<br>
 	[SDK开发演示](https://v.youku.com/v_show/id_XMzc4MzAyMDU4MA==.html?spm=a2hzp.8244740.0.0&f=49551028) <br>
@@ -47,30 +47,23 @@ INF、无名和ACFly飞控的陆续推出，如光流、气压计和GPS等相关
   OLDX-FC硬件采用4层板设计，通过外部电源模块进行供电支持2S~4S电池供电，具有最大12路PWM输出4路AD信号输入，板载NRF2.4通讯芯片，预留6路串口1路CAN接口<br>
   
 ***硬件参数：***
-|项目|参数|
-|:---|:---|
-|处理器|STM32F405RGT6*2|
-|处理器性能|32Bit ARM Cortex-M4 168MH|
-|陀螺仪 加速度计|ICM20602 + LSM6DS33|
-|磁力计|LIS3MDL|
-|气压计|MS5611|
-|预留接口|GPS*1 串口*4 CAN*1 图像*1|
-|PWM 输出通道|8 通道PWM + 4 路AUX|
-|供电|5V输入 IO输出5V|
-|飞行器类型|四旋翼 六旋翼 八旋翼 共轴六旋翼|
-|高度悬停精度|±0.02m（超声波） ±0.1m（气压计）|
-|位置悬停精度|±0.2m（GPS） ±0.1m（光流）|
-|接收机输入|8 通道PPM 或SBUS|
-|接收机输入|8 通道PPM 或SBUS|
-|接收机输入|8 通道PPM 或SBUS|
-|接收机输入|8 通道PPM 或SBUS|
-|接收机输入|8 通道PPM 或SBUS|
-|接收机输入|8 通道PPM 或SBUS|
 
-
+项目|参数
+-------------|-------------
+处理器|STM32F405RGT6*2
+处理器性能|32Bit ARM Cortex-M4 168MH
+陀螺仪 加速度计|ICM20602 + LSM6DS33
+磁力计|LIS3MDL
+气压计|MS5611
+预留接口|GPS*1 串口*4 CAN*1 图像*1
+PWM 输出通道|8 通道PWM + 4 路AUX
+供电|5V输入 IO输出5V
+飞行器类型|四旋翼 六旋翼 八旋翼 共轴六旋翼
+高度悬停精度|±0.02m（超声波） ±0.1m（气压计）
+位置悬停精度|±0.2m（GPS） ±0.1m（光流）
 
 # 4 软件说明
-
+  OLDX-FC基于C语言和Keil5进行开发
 
 # 5 飞控使用教程
 ## 5.1 PCB接口说明
