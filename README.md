@@ -225,6 +225,7 @@ SONAR_USE_FLOW|直接使用Pixflow传感器自带超声波高度数据
 
 ```
 #if defined(M_DRONE)
+#define M_DRONE_ID     //单片机id_chip值
 #define PX4_SDK 0  
 //#define PX4_LINK
 #define USE_MINI_FC_FLOW_BOARD 0 
@@ -258,6 +259,7 @@ SONAR_USE_FLOW|直接使用Pixflow传感器自带超声波高度数据
 <br>
 并在24~42唯一定义该机型：
 <br>
+
 ```
 #define M_DRONE
 //#define M_DRONE250X4
@@ -266,6 +268,42 @@ SONAR_USE_FLOW|直接使用Pixflow传感器自带超声波高度数据
 //#define M_DRONE_PX4
 //#define M_CAR
 ```
+
+<br>
+并在init.c 43行定义飞控对应2.4G通讯通道，修改188行 mode_oldx.rc_loss_return_home选择失控模式：
+<br>
+
+```
+switch(id_chip)
+{
+	case M_DRONE_ID: CHE=25;break;
+	case IMAV2: CHE=22;break;
+	case IMAV3: CHE=33;break;
+	default: CHE=11;break;
+}
+```
+
+<br>
+并在pos_ctrl.c 854行定义使用的SDK：
+<br>
+
+```
+switch(mission_sel_lock)
+{
+   case 0:
+				switch(id_chip)
+				{
+				case M_DRONE_ID: mission_flag=mission_test_gps(T); break;//MAP1
+			    case IMAV2: mission_flag=mission_search(T); break;//Serach2
+				case IMAV3: mission_flag=mission_test_gps(T); break;//MAP2
+				default:mission_flag=mission_test_gps(T); break;
+				}	
+	break;
+```
+
+### 5.3.2 参数调节
+
+
 
 ## 5.4 首次飞行说明(四轴机型为例)
 ### 5.4.1 飞行器安装
