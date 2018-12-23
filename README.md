@@ -172,11 +172,53 @@ CH8|高度模式|  通道值<1500(超声波 气压计自动切换) 通道值=150
 **飞行中自动返航**：无论在自主飞行或人工遥控飞行中 如果CH6通道值从大于1500切换到小于1500则进入失控策略，过程中可以通过人为遥控打断，并重新进行触发
 
 
-## 5.3 控制参数调整和飞行器配置说明
+## 5.3 飞行器配置和控制参数调整说明
+### 5.3.1 飞行器配置
 
 
 ## 5.4 首次飞行说明(四轴机型为例)
 ### 5.4.1 飞行器安装
+（1）飞控模块include.h<br>
+
+宏定义|说明
+-------------|-------------
+USE_OLDX_REMOTE|使用OLDX手持遥控器代替传统遥控器
+AUTO_MISSION|使能SDK飞行 
+MAXMOTORS|最大电机数量（4/6/8/12）
+FLASH_USE_STM32|使用STM32内部EPRoom模拟Flash  使能则无法存储GPS航点
+YAW_INVER|航向控制输出方向 用于电机转向与标准方向不对下的软件调整，不用重新安装电机
+YAW_FC|不使用磁力计修正航向
+MAX_CTRL_ANGLE|最大控制姿态角度
+MAX_CTRL_YAW_SPEED_RC|最大控制航向角速度
+ESO_AI|姿态控制内环ADRC b0参数（0表示不使用ADRC控制器）
+ESO_YI|航向控制内环ADRC b0参数（0表示不使用ADRC控制器）
+HOLD_THR_PWM|预设悬停油门
+DEBUG_MODE|室内则封闭PWM输出，解锁后电机不转动可以作为室内Debug使用
+TUNING_ONE_AXIX|使能则参数调节时仅针对一个轴
+TUNING_X TUNING_Z|单轴调参目标
+
+（2）飞控模块oldx_api.h<br>
+
+宏定义|说明
+-------------|-------------
+LAND_SPD|自动降落速度
+MAX_WAYP_Z|最大航点高度限制
+WAY_POINT_DEAD1|航点达到判断死区
+LAND_CHECK_G|着地检测重量加速度
+LAND_CHECK_TIME|着地检测条件判断时间
+YAW_LIMIT_RATE|旋转航向最大角速度限制 
+
+
+（3）导航模块include.h<br>
+
+宏定义|说明
+-------------|-------------
+USE_UKF_FROM_AUTOQUAD|使用Autoquad提供的UKF融合算法(存在Bug)
+UKF_IN_ONE_THREAD|UKF融合时不使用UcosII系统
+USE_US100 USE_KS103 USE_LIDAR|定高传感器数据选择
+SONAR_SAMPLE1 SONAR_SAMPLE2 SONAR_SAMPLE3|高度传感器数据采样频率
+USE_IMU_BACK_IO_AS_SONAR|使用串口4采集高度传感器数据
+SONAR_USE_FLOW|直接使用Pixflow传感器自带超声波高度数据
 
 # 6 进阶SDK开发说明
 
