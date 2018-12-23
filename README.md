@@ -31,7 +31,7 @@ IMAV国际微小型无人机大赛|室外赛第5名|2017
 基于匿名地面站能实现对飞控内部任意融合结果、传感器参数、控制反馈期望和状态信息的实时显示和参数调节，基于板载NRF2.4通讯芯片能与地面手持遥控实现最远900米
 的数据交互，实时显示飞行器经纬度、姿态，并对任意参数进行在线设定和修改，免去室外参数调节需要携带电脑和平板的不便。<br>
 
-<div align=center><img width="540" height="460" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/oldx.jpg"/></div>
+<div align=center><img width="540" height="360" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/oldx.jpg"/></div>
 
 
 
@@ -85,6 +85,7 @@ PWM 输出通道|8 通道PWM + 4 路AUX
 可靠的姿态解算和机体加速度解算，同时预留CAN总线接口方便后续外扩其他传感器数据。
 
 <br><br>
+
 **飞行控制模块**
 项目|参数
 -------------|-------------
@@ -99,6 +100,7 @@ PWM 输出通道|8 通道PWM + 4 路AUX
 地面站支持|匿名地面站(参数显示+波形显示+参数设置)  Qground/MissionPlanner(位姿轨迹显示+航点写入)
 
 <br><br>
+
 **组合导航模块**
 项目|参数
 -------------|-------------
