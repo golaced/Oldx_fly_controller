@@ -169,15 +169,12 @@ CH8|高度模式|  通道值<1500(超声波 气压计自动切换) 通道值=150
 **自动起飞和智能飞行**：CH5>1500 CH6>1500 CH7>1500 CH8<1500  状态下外八解锁  并把油门置于中位(自主飞行中任意遥感不在中位均会进入自主飞行模式，
 回复中位后继续执行当前任务。需要取消飞行则保证CH5<1500) <br>
 **自主任务状态机重置**：在飞行器执行自主任务后无论自动降落或者人工打断都需在着陆上锁后保证CH5<1500 CH7<1500<br>
-**飞行中自动返航**：无论在自主飞行或人工遥控飞行中 如果CH6通道值从大于1500切换到小于1500则进入失控策略，过程中可以通过人为遥控打断，并重新进行触发
-
+**飞行中自动返航**：无论在自主飞行或人工遥控飞行中 如果CH6通道值从大于1500切换到小于1500则进入失控策略，过程中可以通过人为遥控打断，并重新进行触发<br>
+**陀螺仪校准**：CH8<1500 时CH7从小于1500到大于1500 快速切换多次<br>
+**磁力计校准**：CH8>1500 时CH7从小于1500到大于1500 快速切换多次，进入模式后BB响持续发声，蓝色1s间隔闪烁<br>
 
 ## 5.3 飞行器配置和控制参数调整说明
 ### 5.3.1 飞行器配置
-
-
-## 5.4 首次飞行说明(四轴机型为例)
-### 5.4.1 飞行器安装
 （1）飞控模块include.h<br>
 
 宏定义|说明
@@ -196,6 +193,8 @@ HOLD_THR_PWM|预设悬停油门
 DEBUG_MODE|室内则封闭PWM输出，解锁后电机不转动可以作为室内Debug使用
 TUNING_ONE_AXIX|使能则参数调节时仅针对一个轴
 TUNING_X TUNING_Z|单轴调参目标
+USE_KF|使用带估计加速度偏差的卡尔曼滤波器估计高度否则使用PX4提供的EKF高度估计算法
+USE_CARGO|使用AUX3的舵机投递器
 
 （2）飞控模块oldx_api.h<br>
 
@@ -219,6 +218,58 @@ USE_US100 USE_KS103 USE_LIDAR|定高传感器数据选择
 SONAR_SAMPLE1 SONAR_SAMPLE2 SONAR_SAMPLE3|高度传感器数据采样频率
 USE_IMU_BACK_IO_AS_SONAR|使用串口4采集高度传感器数据
 SONAR_USE_FLOW|直接使用Pixflow传感器自带超声波高度数据
+
+<br><br>
+**飞行器型号设置**：
+（1）采用如下宏定义定义你的飞行器<br>
+
+```
+#if defined(M_DRONE)
+#define PX4_SDK 0  
+//#define PX4_LINK
+#define USE_MINI_FC_FLOW_BOARD 0 
+#define USE_VER_8_PWM 1  
+#define USE_VER_8 0  
+#define USE_VER_7 1
+#define USE_OLDX_REMOTE 0
+
+#define BLDC_PAN
+#define W2C_MARK
+#define USE_CIRCLE 0
+//#define USE_LED 
+//#define USE_CARGO     //可修改
+#define AUTO_MISSION    //可修改
+
+//#define USE_KF	    //可修改 
+#define USE_UWB
+#define MAXMOTORS 		(4)		//可修改
+#define FLASH_USE_STM32 0       //可修改
+#define YAW_INVER 	  0		    //可修改
+#define YAW_FC 0  				//可修改
+#define MAX_CTRL_ANGLE			30.0f	//可修改
+
+#define ESO_AI 22  //可修改
+#define ESO_YI 22  //可修改
+//
+#define TRAJ1_1  2//2 circle 1 line  3 way points   4 jerk  5 car
+#define HOLD_THR_PWM  LIMIT(500,0,500)  //可修改
+#endif
+```
+<br>
+并在24~42唯一定义该机型：
+<br>
+```
+#define M_DRONE
+//#define M_DRONE250X4
+//#define M_DRONE_330X6
+//#define M_DRONE_330 
+//#define M_DRONE_PX4
+//#define M_CAR
+```
+
+## 5.4 首次飞行说明(四轴机型为例)
+### 5.4.1 飞行器安装
+
 
 # 6 进阶SDK开发说明
 
