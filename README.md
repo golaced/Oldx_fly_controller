@@ -220,7 +220,7 @@ USE_IMU_BACK_IO_AS_SONAR|使用串口4采集高度传感器数据
 SONAR_USE_FLOW|直接使用Pixflow传感器自带超声波高度数据
 
 <br><br>
-**飞行器型号设置**：
+**飞行器型号设置**：<br>
 （1）采用如下宏定义定义你的飞行器<br>
 
 ```
@@ -257,7 +257,7 @@ SONAR_USE_FLOW|直接使用Pixflow传感器自带超声波高度数据
 #endif
 ```
 <br>
-并在24~42唯一定义该机型：
+并在24~42"唯一"定义该机型：
 <br>
 
 ```
@@ -270,16 +270,16 @@ SONAR_USE_FLOW|直接使用Pixflow传感器自带超声波高度数据
 ```
 
 <br>
-并在init.c 43行定义飞控对应2.4G通讯通道，修改188行 mode_oldx.rc_loss_return_home选择失控模式：
+并在init.c 43行定义飞控对应2.4G通讯通道CHE，修改188行 mode_oldx.rc_loss_return_home选择失控模式：
 <br>
 
 ```
 switch(id_chip)
 {
-	case M_DRONE_ID: CHE=25;break;
-	case IMAV2: CHE=22;break;
-	case IMAV3: CHE=33;break;
-	default: CHE=11;break;
+case M_DRONE_ID: CHE=25;break;
+case IMAV2: CHE=22;break;
+case IMAV3: CHE=33;break;
+default: CHE=11;break;
 }
 ```
 
@@ -290,19 +290,31 @@ switch(id_chip)
 ```
 switch(mission_sel_lock)
 {
-   case 0:
-				switch(id_chip)
-				{
-				case M_DRONE_ID: mission_flag=mission_test_gps(T); break;//MAP1
-			    case IMAV2: mission_flag=mission_search(T); break;//Serach2
-				case IMAV3: mission_flag=mission_test_gps(T); break;//MAP2
-				default:mission_flag=mission_test_gps(T); break;
-				}	
-	break;
+case 0:
+switch(id_chip)
+{
+case M_DRONE_ID: mission_flag=mission_test_gps(T); break;//MAP1
+case IMAV2: mission_flag=mission_search(T); break;//Serach2
+case IMAV3: mission_flag=mission_test_gps(T); break;//MAP2
+default:mission_flag=mission_test_gps(T); break;
+}	
+break;
 ```
 
-### 5.3.2 参数调节
+<br>
+并在scheduer.c 152行定义UART_UP_LOAD_SEL选择上位机波形显示队列：
+<br>
 
+
+
+### 5.3.2 参数调节
+(1)姿态参数调节<br>
+
+(2)高度参数调节<br>
+
+(3)位置参数调节<br>
+
+(4)远程调参与波形显示<br>
 
 
 ## 5.4 首次飞行说明(四轴机型为例)
