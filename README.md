@@ -31,7 +31,7 @@ IMAV国际微小型无人机大赛|室外赛第5名|2017
 基于匿名地面站能实现对飞控内部任意融合结果、传感器参数、控制反馈期望和状态信息的实时显示和参数调节，基于板载NRF2.4通讯芯片能与地面手持遥控实现最远900米
 的数据交互，实时显示飞行器经纬度、姿态，并对任意参数进行在线设定和修改，免去室外参数调节需要携带电脑和平板的不便。<br>
 
-<div align=center><img width="540" height="360" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/oldx.jpg"/></div>
+<div align=center><img width="540" height="330" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/oldx.jpg"/></div>
 
 
 
@@ -60,12 +60,12 @@ IMAV国际微小型无人机大赛|室外赛第5名|2017
 
 项目|参数
 -------------|-------------
-处理器|STM32F405RGT6*2
+处理器|STM32F405RGT6-2
 处理器性能|32Bit ARM Cortex-M4 168MH
 陀螺仪 加速度计|ICM20602 + LSM6DS33
 磁力计|LIS3MDL
 气压计|MS5611
-预留接口|GPS*1 串口*4 CAN*1 图像*1
+预留接口|GPS-1 串口-4 CAN-1 图像-1
 PWM 输出通道|8 通道PWM + 4 路AUX
 供电|5V输入 IO输出5V
 飞行器类型|四旋翼 六旋翼 八旋翼 共轴六旋翼
@@ -85,8 +85,8 @@ PWM 输出通道|8 通道PWM + 4 路AUX
 可靠的姿态解算和机体加速度解算，同时预留CAN总线接口方便后续外扩其他传感器数据。
 
 <br><br>
-
 **飞行控制模块**
+
 项目|参数
 -------------|-------------
 姿态解算|互补滤波
@@ -100,8 +100,8 @@ PWM 输出通道|8 通道PWM + 4 路AUX
 地面站支持|匿名地面站(参数显示+波形显示+参数设置)  Qground/MissionPlanner(位姿轨迹显示+航点写入)
 
 <br><br>
-
 **组合导航模块**
+
 项目|参数
 -------------|-------------
 姿态解算|非线性AHRS/梯度下降/扩展卡尔曼/互补滤波
