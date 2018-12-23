@@ -1,6 +1,6 @@
 # OLDX-开源多旋翼开发平台项目
 <div align=center><img width="600" height="130" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/logo.JPG"/></div>
-</div><br>
+<br><br>
 # 1 项目介绍	(如果该项目对您有帮助请 Star 我们的项目)
 <div align=center><img width="540" height="380" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/fc.jpg"/></div>
   OLDX多旋翼开发平台（OLDX-FC）是由北京理工大学自动化学院所属极客团队开发的一个目前国内最完整的免费开源飞控项目，随着国内开源飞控的逐步发展如匿名、
