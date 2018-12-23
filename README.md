@@ -31,7 +31,8 @@ IMAV国际微小型无人机大赛|室外赛第5名|2017
 基于匿名地面站能实现对飞控内部任意融合结果、传感器参数、控制反馈期望和状态信息的实时显示和参数调节，基于板载NRF2.4通讯芯片能与地面手持遥控实现最远900米
 的数据交互，实时显示飞行器经纬度、姿态，并对任意参数进行在线设定和修改，免去室外参数调节需要携带电脑和平板的不便。<br>
 
-<div align=center><img width="240" height="240" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/remote.png"/></div>
+<div align=center><img width="540" height="460" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/oldx.jpg"/></div>
+
 
 
 **飞控特性**：<br>
@@ -113,23 +114,31 @@ PWM 输出通道|8 通道PWM + 4 路AUX
 
 接口|说明|支持模块
 -------------|-------------|-------------
-飞控下载|飞控模块SWD下载口|download_fc模块
+飞控下载|飞控模块SWD下载口|download_fc模块 C->SCLK D->SWD
 导航下载|导航模块SWD下载口|download_stlink模块
-导航串口1|GPS和外部罗盘IIC接口|M8N Mini GPS
+导航串口1|GPS和外部罗盘IIC接口|乐迪M8N Mini GPS C->SCL D->SDA
 导航串口5|光流传感器接口|Pixflow  OLDX-AMF
-导航串口3|超声波接口|US100
+导航串口3|超声波接口|US100 (串口模式下T->T R->R)  北醒激光测距模块
 导航串口4|预留传感器接口|
 导航CAN|预留CAN总线接口|
-飞控串口3|图像处理接口|树莓派  Odroid-XU4
+飞控串口3|图像处理接口|树莓派  Odroid-XU4 （图像处理器需自行供电）
 飞控串口1|数传接口|匿名数传 3DR数传  CUAV WIFI数传
 PWM1~8|电调接口|400Hz
 AUX1~4|电调9~12/舵机控制接口 1俯仰 2横滚 3投递器开关|两轴舵机云台 两轴无刷云台
 AD1~4|模拟电压采集接口|压力传感器AD(0~3.3V)
 SBUS|接收机接口|天地飞接收机 Futaba接收机
-舵机供电选择|R39外部供电 R38飞控供电  任选一|
+舵机供电选择|R39外部供电 R38飞控供电 （任选一）|
+供电|采用6P自锁双头端子线与供电模块连续|power模块 +->DC B->蜂鸣器信号 5->5V降压输入
 
 
-## 5.2 飞控宏定义和软件配置说明
+***接线示意图***
+<div align=center><img width="540" height="460" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/pcb.jpg"/></div>
+
+
+
+## 5.2 程序宏定义和飞控配置说明
+### 5.2.1 遥控器通道
+
 
 ## 5.3 控制参数调整和飞行器配置说明
 
