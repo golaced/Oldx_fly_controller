@@ -1,5 +1,5 @@
 # OLDX-开源多旋翼开发平台项目
-<div align=center><img width="540" height="140" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/logo.JPG"/></div>
+<div align=center><img width="600" height="100" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/logo.JPG"/></div>
 # 1 项目介绍(如果该项目对您有帮助请*Star*我们的项目)
 <div align=center><img width="540" height="380" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/fc.jpg"/></div>
   OLDX多旋翼开发平台（OLDX-FC）是由北京理工大学自动化学院所属极客团队开发的一个目前国内最完整的免费开源飞控项目，随着国内开源飞控的逐步发展如匿名、
@@ -30,7 +30,7 @@ IMAV国际微小型无人机大赛|室外赛第5名|2017
 <div align=center><img width="240" height="240" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/remote.png"/></div>
 
 
-**飞控特性**<br>
+**飞控特性**：<br>
 	*UCosII操作系统<br>
 	*自抗扰姿态控制<br>
 	*卡尔曼组合导航<br>
@@ -91,7 +91,7 @@ a++;
 
 
 # 7 捐赠与项目后续开发计划
-如果您觉得该项目对您有帮助，也为了更好的更好的服务社区和不断更新的设计，请通过微信捐赠该项目！
+如果您觉得该项目对您有帮助，也为了更好的项目推进和软硬件更新，请通过微信捐赠该项目！
 <div align=center><img width="240" height="300" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/pay.png"/></div>
 
 
