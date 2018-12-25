@@ -5,7 +5,9 @@
   OLDX多旋翼开发平台（OLDX-FC）是由北京理工大学自动化学院所属《北理云逸科技》团队开发的一个目前国内最完整的免费开源飞控项目，随着国内开源飞控的逐步发展如匿名、
 INF、无名和ACFly飞控的陆续推出，如光流、气压计和GPS等相关算法已经逐步完善，但是相比Pixhawk等国外开源飞控平台的发展和定位仍然太过局限很多团队仍采用
 代码拷贝淘宝二次销售的形式导致经济竞争而非技术竞争。OLDX-FC于14年开始对多旋翼飞行器进行研究期间也经历过开源和借鉴的过程，为希望进一步推动国内开源飞控协作开发和
-相互学习、相互分享的趋势，团队将该OLDX-FC转化为开源项目，采用自由捐赠的形式继续发展（[捐赠地址](https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/pay.png)。
+相互学习、相互分享的趋势，团队将该OLDX-FC转化为开源项目，采用自由捐赠的形式继续发展
+[捐赠地址](https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/pay.png)
+。
 项目遵循GPL协议，能自由下载项目PCB进行加工使用但请勿作为商业用途，开源所有飞行控制和组合导航源码，可以进行修改和二次开发。<br><br><br>
 
 **项目荣誉**
@@ -36,7 +38,7 @@ IMAV国际微小型无人机大赛|室外赛第5名|2017
 
 
 **飞控特性**：<br>
-	*UCosII操作系统<br>
+	*UCosII操作系统(正点原子)<br>
 	*自抗扰姿态控制<br>
 	*卡尔曼组合导航<br>
 	*SDK快速开发<br>
@@ -89,7 +91,7 @@ PWM 输出通道|8 通道PWM + 4 路AUX
 
 项目|参数
 -------------|-------------
-姿态解算|互补滤波
+姿态解算|互补滤波(匿名)
 高度融合|扩展卡尔曼(PX4)/抗差卡尔曼
 姿态控制|SO(3)误差(PX4)+PD(角度)+ADRC(角速度)
 高度控制|PD(高度)+ADRC(垂直速度)
@@ -104,7 +106,7 @@ PWM 输出通道|8 通道PWM + 4 路AUX
 
 项目|参数
 -------------|-------------
-姿态解算|非线性AHRS/梯度下降/扩展卡尔曼/互补滤波
+姿态解算|非线性AHRS/梯度下降/扩展卡尔曼/互补滤波(匿名)
 位置融合|抗差卡尔曼/无迹卡尔曼(AutoQuad)
 传感器接口|GPS(NEO-8M 乐迪迷你)+UWB(INF)+光流(Pixflow/OLDX-AMF)+超声波(串口/PWM)+激光测距仪(VL53L0X)
 
@@ -132,8 +134,18 @@ SBUS|接收机接口|天地飞接收机 Futaba接收机
 舵机供电选择|R39外部供电 R38飞控供电 （任选一）|
 供电|采用6P自锁双头端子线与供电模块连续|power模块 +->DC B->蜂鸣器信号 5->5V降压输入
 
+<br><br>
+**OLDX飞控最少所需配置**
 
-***接线示意图***
+模块组合|实现功能
+-------------|-------------
+飞控+Power模块|手动飞行/气压定高
+飞控+Power模块+光流|手动飞行/气压定高/超声定高/光流悬停/SDK飞行
+飞控+Power模块+GPS|手动飞行/气压定高/GPS航线飞行/SDK飞行
+飞控+Power模块+GPS/光流+树莓派/Odroid|手动飞行/气压定高/GPS航线飞行/SDK飞行/图像导航/视觉降落
+
+<br><br>
+**接线示意图**
 <div align=center><img width="540" height="460" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/pcb.jpg"/></div>
 
 
@@ -141,12 +153,179 @@ SBUS|接收机接口|天地飞接收机 Futaba接收机
 ## 5.2 程序宏定义和飞控配置说明
 ### 5.2.1 遥控器通道
 
+通道|功能|通道说明
+-------------|-------------|-------------
+CH1|横滚通道|
+CH2|俯仰通道|
+CH3|油门通道|
+CH4|航向通道|
+CH5|SDK模式使能|  通道值<1500(关闭自动SDK飞行) 通道值>1500(使能自动SDK飞行)
+CH6|返航和自动起飞| 通道值<1500(打开AUX3口开关) 通道值>1500(关闭AUX3口开关)
+CH7|位置模式|  通道值<1500(手动) 通道值=1500(速度悬停) 通道值>1500(位置悬停)
+CH8|高度模式|  通道值<1500(超声波 气压计自动切换) 通道值=1500(气压计) 通道值>1500(手动)
 
-## 5.3 控制参数调整和飞行器配置说明
+**飞行器解锁上锁**：外八遥控操作<br>
+**飞行中关闭遥控器**：自动返航/自动降落/电机急停<br>
+**自动起飞和智能飞行**：CH5>1500 CH6>1500 CH7>1500 CH8<1500  状态下外八解锁  并把油门置于中位(自主飞行中任意遥感不在中位均会进入自主飞行模式，
+回复中位后继续执行当前任务。需要取消飞行则保证CH5<1500) <br>
+**自主任务状态机重置**：在飞行器执行自主任务后无论自动降落或者人工打断都需在着陆上锁后保证CH5<1500 CH7<1500<br>
+**飞行中自动返航**：无论在自主飞行或人工遥控飞行中 如果CH6通道值从大于1500切换到小于1500则进入失控策略，过程中可以通过人为遥控打断，并重新进行触发<br>
+**陀螺仪校准**：CH8<1500 时CH7从小于1500到大于1500 快速切换多次<br>
+**磁力计校准**：CH8>1500 时CH7从小于1500到大于1500 快速切换多次，进入模式后BB响持续发声，蓝色1s间隔闪烁<br>
+
+## 5.3 飞行器配置和控制参数调整说明
+### 5.3.1 飞行器配置
+（1）飞控模块include.h<br>
+
+宏定义|说明
+-------------|-------------
+USE_OLDX_REMOTE|使用OLDX手持遥控器代替传统遥控器
+AUTO_MISSION|使能SDK飞行 
+MAXMOTORS|最大电机数量（4/6/8/12）
+FLASH_USE_STM32|使用STM32内部EPRoom模拟Flash  使能则无法存储GPS航点
+YAW_INVER|航向控制输出方向 用于电机转向与标准方向不对下的软件调整，不用重新安装电机
+YAW_FC|不使用磁力计修正航向
+MAX_CTRL_ANGLE|最大控制姿态角度
+MAX_CTRL_YAW_SPEED_RC|最大控制航向角速度
+ESO_AI|姿态控制内环ADRC b0参数（0表示不使用ADRC控制器）
+ESO_YI|航向控制内环ADRC b0参数（0表示不使用ADRC控制器）
+HOLD_THR_PWM|预设悬停油门
+DEBUG_MODE|室内则封闭PWM输出，解锁后电机不转动可以作为室内Debug使用
+TUNING_ONE_AXIX|使能则参数调节时仅针对一个轴
+TUNING_X/ TUNING_Z|单轴调参目标
+USE_KF|使用带估计加速度偏差的卡尔曼滤波器估计高度否则使用PX4提供的EKF高度估计算法
+USE_CARGO|使用AUX3的舵机投递器
+
+（2）飞控模块oldx_api.h<br>
+
+宏定义|说明
+-------------|-------------
+LAND_SPD|自动降落速度
+MAX_WAYP_Z|最大航点高度限制
+WAY_POINT_DEAD1|航点达到判断死区
+LAND_CHECK_G|着地检测重量加速度
+LAND_CHECK_TIME|着地检测条件判断时间
+YAW_LIMIT_RATE|旋转航向最大角速度限制 
+
+
+（3）导航模块include.h<br>
+
+宏定义|说明
+-------------|-------------
+USE_UKF_FROM_AUTOQUAD|使用Autoquad提供的UKF融合算法(存在Bug)
+UKF_IN_ONE_THREAD|UKF融合时不使用UcosII系统
+USE_US100/ USE_KS103/ USE_LIDAR|定高传感器数据选择
+SONAR_SAMPLE1/ SONAR_SAMPLE2/ SONAR_SAMPLE3|高度传感器数据采样频率
+USE_IMU_BACK_IO_AS_SONAR|使用串口4采集高度传感器数据
+SONAR_USE_FLOW|直接使用Pixflow传感器自带超声波高度数据
+
+<br><br>
+**飞行器型号设置**：<br>
+（1）采用如下宏定义定义你的飞行器<br>
+
+```
+#if defined(M_DRONE)
+#define M_DRONE_ID     //单片机id_chip值
+#define PX4_SDK 0  
+//#define PX4_LINK
+#define USE_MINI_FC_FLOW_BOARD 0 
+#define USE_VER_8_PWM 1  
+#define USE_VER_8 0  
+#define USE_VER_7 1
+#define USE_OLDX_REMOTE 0
+
+#define BLDC_PAN
+#define W2C_MARK
+#define USE_CIRCLE 0
+//#define USE_LED 
+//#define USE_CARGO     //可修改
+#define AUTO_MISSION    //可修改
+
+//#define USE_KF	    //可修改 
+#define USE_UWB
+#define MAXMOTORS 		(4)		//可修改
+#define FLASH_USE_STM32 0       //可修改
+#define YAW_INVER 	  0		    //可修改
+#define YAW_FC 0  				//可修改
+#define MAX_CTRL_ANGLE			30.0f	//可修改
+
+#define ESO_AI 22  //可修改
+#define ESO_YI 22  //可修改
+//
+#define TRAJ1_1  2//2 circle 1 line  3 way points   4 jerk  5 car
+#define HOLD_THR_PWM  LIMIT(500,0,500)  //可修改
+#endif
+```
+<br>
+并在24~42行"唯一"定义该机型：
+<br>
+
+```
+#define M_DRONE
+//#define M_DRONE250X4
+//#define M_DRONE_330X6
+//#define M_DRONE_330 
+//#define M_DRONE_PX4
+//#define M_CAR
+```
+
+<br>
+并在init.c 43行定义飞控对应2.4G通讯通道CHE，修改188行 mode_oldx.rc_loss_return_home选择失控模式：
+<br>
+
+```
+switch(id_chip)
+{
+case M_DRONE_ID: CHE=25;break;
+case IMAV2: CHE=22;break;
+case IMAV3: CHE=33;break;
+default: CHE=11;break;
+}
+```
+
+<br>
+并在pos_ctrl.c 854行定义使用的SDK：
+<br>
+
+```
+switch(mission_sel_lock)
+{
+case 0:
+switch(id_chip)
+{
+case M_DRONE_ID: mission_flag=mission_test_gps(T); break;//你的SDK
+case IMAV2: mission_flag=mission_search(T); break;
+case IMAV3: mission_flag=mission_test_gps(T); break;
+default:mission_flag=mission_test_gps(T); break;
+}	
+break;
+```
+
+<br>
+并在scheduer.c 152行定义UART_UP_LOAD_SEL选择上位机波形显示队列：
+<br>
+
+
+
+### 5.3.2 参数调节
+(1)远程调参与波形显示<br>
+
+(2)姿态参数调节<br>
+
+(3)高度参数调节<br>
+
+(4)位置参数调节<br>
 
 
 ## 5.4 首次飞行说明(四轴机型为例)
-### 5.4.1 飞行器安装
+### 5.4.1 飞控安装
+### 5.4.2 飞控配置
+### 5.4.3 供电与状态显示
+### 5.4.4 手动飞行
+### 5.4.5 定高飞行
+### 5.4.6 位置悬停
+### 5.4.7 航向飞行
+### 5.4.8 SDK自主飞行
 
 # 6 进阶SDK开发说明
 
