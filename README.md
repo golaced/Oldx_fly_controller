@@ -38,7 +38,7 @@ IMAV国际微小型无人机大赛|室外赛第5名|2017
 
 
 **飞控特性**：<br>
-	*UCosII操作系统<br>
+	*UCosII操作系统(正点原子)<br>
 	*自抗扰姿态控制<br>
 	*卡尔曼组合导航<br>
 	*SDK快速开发<br>
@@ -91,7 +91,7 @@ PWM 输出通道|8 通道PWM + 4 路AUX
 
 项目|参数
 -------------|-------------
-姿态解算|互补滤波
+姿态解算|互补滤波(匿名)
 高度融合|扩展卡尔曼(PX4)/抗差卡尔曼
 姿态控制|SO(3)误差(PX4)+PD(角度)+ADRC(角速度)
 高度控制|PD(高度)+ADRC(垂直速度)
@@ -106,7 +106,7 @@ PWM 输出通道|8 通道PWM + 4 路AUX
 
 项目|参数
 -------------|-------------
-姿态解算|非线性AHRS/梯度下降/扩展卡尔曼/互补滤波
+姿态解算|非线性AHRS/梯度下降/扩展卡尔曼/互补滤波(匿名)
 位置融合|抗差卡尔曼/无迹卡尔曼(AutoQuad)
 传感器接口|GPS(NEO-8M 乐迪迷你)+UWB(INF)+光流(Pixflow/OLDX-AMF)+超声波(串口/PWM)+激光测距仪(VL53L0X)
 
@@ -192,7 +192,7 @@ ESO_YI|航向控制内环ADRC b0参数（0表示不使用ADRC控制器）
 HOLD_THR_PWM|预设悬停油门
 DEBUG_MODE|室内则封闭PWM输出，解锁后电机不转动可以作为室内Debug使用
 TUNING_ONE_AXIX|使能则参数调节时仅针对一个轴
-TUNING_X TUNING_Z|单轴调参目标
+TUNING_X/ TUNING_Z|单轴调参目标
 USE_KF|使用带估计加速度偏差的卡尔曼滤波器估计高度否则使用PX4提供的EKF高度估计算法
 USE_CARGO|使用AUX3的舵机投递器
 
@@ -214,8 +214,8 @@ YAW_LIMIT_RATE|旋转航向最大角速度限制
 -------------|-------------
 USE_UKF_FROM_AUTOQUAD|使用Autoquad提供的UKF融合算法(存在Bug)
 UKF_IN_ONE_THREAD|UKF融合时不使用UcosII系统
-USE_US100 USE_KS103 USE_LIDAR|定高传感器数据选择
-SONAR_SAMPLE1 SONAR_SAMPLE2 SONAR_SAMPLE3|高度传感器数据采样频率
+USE_US100/ USE_KS103/ USE_LIDAR|定高传感器数据选择
+SONAR_SAMPLE1/ SONAR_SAMPLE2/ SONAR_SAMPLE3|高度传感器数据采样频率
 USE_IMU_BACK_IO_AS_SONAR|使用串口4采集高度传感器数据
 SONAR_USE_FLOW|直接使用Pixflow传感器自带超声波高度数据
 
@@ -257,7 +257,7 @@ SONAR_USE_FLOW|直接使用Pixflow传感器自带超声波高度数据
 #endif
 ```
 <br>
-并在24~42"唯一"定义该机型：
+并在24~42行"唯一"定义该机型：
 <br>
 
 ```
@@ -293,9 +293,9 @@ switch(mission_sel_lock)
 case 0:
 switch(id_chip)
 {
-case M_DRONE_ID: mission_flag=mission_test_gps(T); break;//MAP1
-case IMAV2: mission_flag=mission_search(T); break;//Serach2
-case IMAV3: mission_flag=mission_test_gps(T); break;//MAP2
+case M_DRONE_ID: mission_flag=mission_test_gps(T); break;//你的SDK
+case IMAV2: mission_flag=mission_search(T); break;
+case IMAV3: mission_flag=mission_test_gps(T); break;
 default:mission_flag=mission_test_gps(T); break;
 }	
 break;
@@ -308,18 +308,24 @@ break;
 
 
 ### 5.3.2 参数调节
-(1)姿态参数调节<br>
+(1)远程调参与波形显示<br>
 
-(2)高度参数调节<br>
+(2)姿态参数调节<br>
 
-(3)位置参数调节<br>
+(3)高度参数调节<br>
 
-(4)远程调参与波形显示<br>
+(4)位置参数调节<br>
 
 
 ## 5.4 首次飞行说明(四轴机型为例)
-### 5.4.1 飞行器安装
-
+### 5.4.1 飞控安装
+### 5.4.2 飞控配置
+### 5.4.3 供电与状态显示
+### 5.4.4 手动飞行
+### 5.4.5 定高飞行
+### 5.4.6 位置悬停
+### 5.4.7 航向飞行
+### 5.4.8 SDK自主飞行
 
 # 6 进阶SDK开发说明
 
