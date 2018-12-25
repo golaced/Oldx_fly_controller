@@ -146,7 +146,7 @@ SBUS|接收机接口|天地飞接收机 Futaba接收机
 
 <br><br>
 **接线示意图**
-<div align=center><img width="540" height="460" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/pcb.jpg"/></div>
+<div align=center><img width="540" height="300" src="https://github.com/golaced/Oldx_fly_controller/blob/rmd/support_file/img_file/line.jpg"/></div>
 
 
 
@@ -312,7 +312,7 @@ break;
 飞控默认采用2.4G无线与OLDX手持遥控端进行通讯，参数调节可以直接通过遥控器实现，另外手持遥控器同时具有USB虚拟串口，
 遥控器工作后连接PC机则可以使用匿名地面站进行参数调节(115200默认波特率)和参数波形显示。(注：对手持控制器来说需要在PID参数界面
 等等数据全部接受完成后在进行调参，否则会出现参数误写入引起的炸鸡；对地面站同样也是建议在数据通信正常后最少读取5次PID参数避免误写入问题)
-<div align=center><img width="640" height="360" src="https://github.com/golaced/Oldx_fly_controller/blob/rmd/support_file/img_file/tunning.jpg"/></div>
+<div align=center><img width="640" height="320" src="https://github.com/golaced/Oldx_fly_controller/blob/rmd/support_file/img_file/tunning.jpg"/></div>
 
 (2)姿态参数调节<br>
 飞控安装好后首先需要进行姿态参数的调节推荐采用万向轴或烤四轴的方式固定飞行器进行参数调节，通过选择调参模式确认是单轴还是全向调参：
@@ -469,9 +469,8 @@ nav_spd_pid.flt_nav=1;//修改为0.356左右可平滑制动手感  目前已经�
 OLDX-Remote开机后会显示当前遥控器通道请保证其与飞控中一致（之前在线修改），遥控器目前具有三类界面，（1）主界面：显示飞行器高度，姿态，电压和飞行时间等常用数据（2）PID参数界面与PC端地面站对应显示飞行器内部参数（3）
 SDK界面：显示航线和自主任务命令，状态机状态。则各界面下英文缩写如下：
 
-缩写|说明
+主界面|说明
 -------------|-------------
-主界面|
 P|OLDX-Remote 俯仰遥杆值(体感)
 R|OLDX-Remote 横滚遥杆值(体感)
 T|OLDX-Remote 油门杆值(遥杆)
@@ -490,10 +489,10 @@ lock|飞行器锁定情况
 矩形界面中 三个正方形点| 从上到下 *GPS连接  *图像设备连接 *光流模块连接
 中心圆圈和实心点|单成像中c2c结构体pix_x,y有数会显示原点，可使用其来判断图像目标十分识别和在图像中的像素位置
 
+<br><br>
 
-缩写|说明
+PID参数界面|说明
 -------------|-------------
-PID参数界面|
 PIDX-X|上位机中对应参数
 左右拨动遥感到底2s左右可切换界面|
 左右上下选择PID参数|
@@ -501,9 +500,10 @@ PIDX-X|上位机中对应参数
 选择下再次点击退出选中—|遥控器每5s读取飞控数据 选中下不读取 
 选中中长按遥感遥控发出BB声则参数写入|对CHE遥控通道来说其写入 需到主界面进行相同操作 同时会校准遥控IMU
 
-缩写|说明
+<br><br>
+
+SDK界面|说明
 -------------|-------------
-SDK界面|
 main|Idle(状态机默认状态 该状态自动起飞后才会运行SDK)  Mission(SDK模式)  Safe(状态机保护进入普通悬停模式  需降落上锁后复位所用遥控开关方可清除)
 RC右方%|飞行器电量
 Subs|子状态机状态
@@ -515,11 +515,18 @@ Dis|下一个航点距离(米)
 
 
 ### 5.4.2 遥控器模式介绍
-OLDX-Remote板载Mpu6050
+OLDX-Remote板载MPU6050 IMU传感器可实现体感操作，在include.h中修改如下：
+
+```
+#define USE_RECIVER_MINE 1
+```
+
+体感操作遥控器遥感上下对应油门，左右对应航向，前后倾斜对应俯仰，侧斜对应横滚。飞行器解锁为遥感右下2秒。通过在主界面长按遥感按键
+可以实际对遥控器中位的零偏校准。
 
 
 # 6 首次飞行说明(四轴机型为例)
-## 6.1 飞控安装
+## 6.1 飞控安装和程序下载
 ## 6.2 飞控配置和传感器校准
 ## 6.3 供电与LED状态显示
 ## 6.4 手动飞行
