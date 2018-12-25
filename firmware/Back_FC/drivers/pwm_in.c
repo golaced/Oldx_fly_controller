@@ -1,11 +1,3 @@
-/******************** (C) COPYRIGHT 2014 ANO Tech ********************************
-  * 作者   ：匿名科创
- * 文件名  ：pwm_in.c
- * 描述    ：PWM输入捕获
- * 官网    ：www.anotc.com
- * 淘宝    ：anotc.taobao.com
- * 技术Q群 ：190169595
-**********************************************************************************/
 #include "pwm_in.h"
 #include "rc.h"
 #include "include.h"
@@ -290,5 +282,4 @@ void _TIM4_IRQHandler(void)
 	}
 }
 
-/******************* (C) COPYRIGHT 2014 ANO TECH *****END OF FILE************/
 
