@@ -312,7 +312,7 @@ break;
 飞控默认采用2.4G无线与OLDX手持遥控端进行通讯，参数调节可以直接通过遥控器实现，另外手持遥控器同时具有USB虚拟串口，
 遥控器工作后连接PC机则可以使用匿名地面站进行参数调节(115200默认波特率)和参数波形显示。(注：对手持控制器来说需要在PID参数界面
 等等数据全部接受完成后在进行调参，否则会出现参数误写入引起的炸鸡；对地面站同样也是建议在数据通信正常后最少读取5次PID参数避免误写入问题)
-<div align=center><img width="640" height="320" src="https://github.com/golaced/Oldx_fly_controller/blob/rmd/support_file/img_file/tunning.jpg"/></div>
+<div align=center><img width="640" height="300" src="https://github.com/golaced/Oldx_fly_controller/blob/rmd/support_file/img_file/tunning.jpg"/></div>
 
 (2)姿态参数调节<br>
 飞控安装好后首先需要进行姿态参数的调节推荐采用万向轴或烤四轴的方式固定飞行器进行参数调节，通过选择调参模式确认是单轴还是全向调参：
@@ -464,7 +464,7 @@ nav_spd_pid.flt_nav=1;//修改为0.356左右可平滑制动手感  目前已经�
 为提高调参速度减少户外飞行所需PC机和上位机设备,OLDX飞控设计了一个手持端遥控器，其除了能使用体感模式遥控飞行器外，还能代替PC地面站进行实时参数调节，
 另外其实时回传SDK主状态机和子状态机运行状态，期望高度速度信息和航线航点信息，能实时了解当前SDK运行状况和下一时刻飞行器的目标任务，解决了飞行器自主
 飞行中对其内部状态难以获取的问题。
-<div align=center><img width="640" height="360" src="https://github.com/golaced/Oldx_fly_controller/blob/rmd/support_file/img_file/remote.jpg"/></div>
+<div align=center><img width="640" height="300" src="https://github.com/golaced/Oldx_fly_controller/blob/rmd/support_file/img_file/remote.jpg"/></div>
 ### 5.4.1 界面介绍
 OLDX-Remote开机后会显示当前遥控器通道请保证其与飞控中一致（之前在线修改），遥控器目前具有三类界面，（1）主界面：显示飞行器高度，姿态，电压和飞行时间等常用数据（2）PID参数界面与PC端地面站对应显示飞行器内部参数（3）
 SDK界面：显示航线和自主任务命令，状态机状态。则各界面下英文缩写如下：
