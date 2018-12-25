@@ -311,16 +311,16 @@ break;
 (1)远程调参与波形显示<br>
 飞控默认采用2.4G无线与OLDX手持遥控端进行通讯，参数调节可以直接通过遥控器实现，另外手持遥控器同时具有USB虚拟串口，
 遥控器工作后连接PC机则可以使用匿名地面站进行参数调节(115200默认波特率)和参数波形显示。
-<div align=center><img width="540" height="460" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/tunning.jpg"/></div>
+<div align=center><img width="540" height="460" src="https://github.com/golaced/Oldx_fly_controller/blob/rmd/support_file/img_file/tunning.jpg"/></div>
 
 (2)姿态参数调节<br>
 飞控安装好后首先需要进行姿态参数的调节推荐采用万向轴或烤四轴的方式固定飞行器进行参数调节，通过选择调参模式确认是单轴还是全向调参：
 
-、、、
+```
 TUNING_ONE_AXIX 0
 TUNING_X 0
 TUNING_Z 0
-、、、
+```
 
 默认都为0则飞行器全向参数都可调节，则以该情况为例设置 UART_UP_LOAD_SEL=11 使能上位机波形显示为姿态参数调节序列，通过CH6(>1500外环)能选择显示内环还是
 外环的期望和给的参数，则波形中Ax Ay Az为期望的横滚 俯仰 航向值，Gx Gy Gz为对应反馈值，Hx Hy Hz为对应误差。参数调节时如果外环PID参数有值则
@@ -366,16 +366,16 @@ PID6-D|航向 外环D|300
 在完成参数调节后可以采用两种方式将其保存在Flash中，对于感度可以采用遥控触发陀螺仪的方式写入(水平静置)，但还是推荐采用在代码里修改的方式。
 其中对于ADRC b0参数在机型宏定义中修改，飞行器感度在Debug watch中修改后选择校准陀螺仪(见6.4.2小节)保存，姿态PID则在parameter.c 40行中进行修改:
 
-、、、
+```
 float pid_att_out[3]={0.7,0.0,0.0};
 float pid_att_in[3]={0.7,0.2,2.2};
 
 float pid_att_out_yaw[3]={0.8,0.05,0.3};
 float pid_att_in_yaw[3]={1.2,0.1,1.2};
-、、、
+```
 
 (3)高度参数调节<br>
-
+高度参数调节方式类似姿态调节，如对性能要求不高则可采用默认参数通过调整感度的方式实现快速起飞。
 (4)位置参数调节<br>
 
 
