@@ -570,6 +570,12 @@ break;
 
 <div align=center><img width="540" height="400" src="https://github.com/golaced/Oldx_fly_controller/blob/rmd/support_file/img_file/CH.jpg"/></div>
 
+**注：如采用图中遥控配置：<br>**
+(1)则高度档在上快速拨动POS档会触发磁力计校准，高度档在下快速拨动POS会触发加速度和陀螺仪校准；<br>
+(2)SDK在上，失控在右，高度在中，位置在上(确认主状态机复位)，则解锁后油门到中位触发自动起飞和SDK飞行；<br>
+(3)SDK飞行降落后，仅将失控拧到左，位置在下，SDK在下即可完成对状态机的复位；<br>
+(4)飞行中失控从右旋转到左则进入失控保护策略；<br>
+
 ## 6.3 LED状态显示
 ## 6.4 手动飞行
 ## 6.5 定高飞行
