@@ -526,6 +526,41 @@ OLDX-Remote板载MPU6050 IMU传感器可实现体感操作，在include.h中修�
 
 # 6 首次飞行说明(四轴机型为例)
 ## 6.1 飞控安装和程序下载
+首先将OLDX飞控沿机头方向安装在机体中心，推荐使用减震处理，(不在中心可能由于旋转效应造成而外加速度影响制动或悬停)，下图给出了典型飞行器的电调PWM
+信号线顺序和螺旋桨转向，如电机转向与图中相反可以重新安装或者定义YAW_INVER为1：
+
+<div align=center><img width="640" height="200" src="https://github.com/golaced/Oldx_fly_controller/blob/rmd/support_file/img_file/drone.jpg"/></div>
+
+安装好电调和飞控后，将Power模块使用6P双头自锁线与飞控供电端连接，同时将Power端DC输入与飞行器整体供电输入焊接在一起(2S~4S),将螺旋桨解除，采用如下图的方式
+使用download和ST-link下载器连接飞控供电：
+<div align=center><img width="640" height="300" src="https://github.com/golaced/Oldx_fly_controller/blob/rmd/support_file/img_file/SWD.jpg"/></div>
+
+在确认ST-Link驱动安装无误后首先向FC飞控单片机下载程序，下载完成后可以采用Debug模式运行或者重新上电，如系统正常则蜂鸣器会响并且LED闪烁，之后采用同样方法
+向IMU导航单片机下载程序，运行后查看Watch中lis3mdl结构体(如没有请手动右键添加，同时保证菜单View下拉中Periodic Update选择)中Acc_I16、Gyro_16、Mag_Adc是否是数
+如有数(传感器正常)则将电路板水平静置将Acc_CALIBRATE和Gyro_CALIBRATE分别置1，查看Acc_Offset和Gyro_Offset保存的当前传感器零偏，复位芯片后查看读书是否基本一致
+验证板载Flash芯片正常。<br>
+完成IMU下载和电路验证后重新Debug飞控单片机，此时开机蜂鸣器应当会发出开机音乐,同样mpu6050_fc结构体中传感器参数是否刷新，校准传感器复位芯片检测Flash中
+是否读出上次标定参数，如全部正常则硬件部分基本无误可以尝试飞行。<br>
+
+注：如将如下部分进行修改则开机可以模拟Pixhawk蜂鸣器声音
+
+```		
+//beep.c 145行
+case START_BEEP:
+music_sel=	START_BEEP;
+Play_Music(start_music_windows,0,sizeof(start_music_windows)/2);	
+break;
+		
+//修改为
+case START_BEEP:
+music_sel=	START_BEEP;
+Play_Music(start_music_px4,0,sizeof(start_music_px4)/2);	
+break;
+			
+```		
+
+另外飞控安装时最好使用黑色泡沫覆盖气压计部分并3D打印外壳，防止飞行中气压计受气流干扰！！
+
 ## 6.2 飞控配置和传感器校准
 ## 6.3 供电与LED状态显示
 ## 6.4 手动飞行
