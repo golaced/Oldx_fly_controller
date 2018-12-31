@@ -620,7 +620,7 @@ OLDX飞控移植了Mavlink通讯协议，目前支持与Qground地面站通信�
 (4)参数调节<br>
 
 下面主要介绍航点参数写入操作：<br>
-<div align=center><img width="540" height="400" src="https://github.com/golaced/Oldx_fly_controller/blob/rmd/support_file/img_file/dmz.jpg"/></div>
+<div align=center><img width="540" height="400" src="https://github.com/golaced/Oldx_fly_controller/blob/rmd/support_file/img_file/dmz.JPG"/></div>
 
 各航点内相关参数说明如下：
 
@@ -636,7 +636,14 @@ Acceptance|飞行速度(注：由于协议问题无法使用Flight Speed设置�
 否一致。
 
 ## 6.8 SDK自主飞行
-
+SDK自主飞行时OLDX飞控相比目前市面上所有开源飞控最独特和最重要的功能，其旨在提供一个易于快速实现复杂控制逻辑和图像导航的编程方式，
+后续将使用micropython作为SDK编程核心基于图形界面实现直观简单的SDK编程，其具体开发请参照第7小节内容，使能SDK飞行的具体过程如下：<br>
+(1)在飞行器宏定义中使用#define AUTO_MISSION,在Pos_ctrl.c文件中定义选用的SDK <br>
+(2)确认连接GPS或光流传感器<br>
+(3)在起飞前确认主状态机为IDLEM<br>
+(4)遥控器开关使能SDK，打开位置模式和定高模式<br>
+(5)解锁飞行器后推动油门到中位，确保其他遥感在中位则飞行器自动起飞并执行SDK飞行<br>
+(6)在飞行过程中可在手持遥控SDK界面实时观察自动任务执行情况，自主飞行中可通过遥控操作打断飞行或者使用失控反航
 
 
 # 7 进阶SDK开发说明
