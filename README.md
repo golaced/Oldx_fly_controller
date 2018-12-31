@@ -709,7 +709,7 @@ mode|mode==MODE_FAST_WAY 则为快速飞行模式(放大对航点控制误差的
 
 <br><br>
 
-way_point_mission|航向飞行
+way_point_mission|航线飞行
 -------------|-------------
 spd_limit|总体航向速度限制(每个航点速度可在上位机中accpentance进行设置如其为0则使用该参数限制飞行速度)
 head_to_waypoint|为1则机头朝向每个航点
