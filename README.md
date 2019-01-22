@@ -73,6 +73,15 @@ PWM 输出通道|8 通道PWM + 4 路AUX
 高度悬停精度|±0.02m（超声波） ±0.1m（气压计）
 位置悬停精度|±0.2m（GPS） ±0.1m（光流）
 
+
+<br><br>
+**飞控外壳**<br>
+提供飞控3D打印外壳STL文件，设计为气压计增加缓冲空间并设计了减震球底座。
+<div align=center><img width="340" height="160" src="https://github.com/golaced/Oldx_fly_controller/blob/rmd/support_file/img_file/cap1.JPG"/></div>
+<div align=center><img width="340" height="160" src="https://github.com/golaced/Oldx_fly_controller/blob/rmd/support_file/img_file/cap2.JPG"/></div>
+<div align=center><img width="340" height="160" src="https://github.com/golaced/Oldx_fly_controller/blob/rmd/support_file/img_file/cap3.JPG"/></div>
+
+
 # 4 软件说明
   OLDX-FC基于C语言和Keil5进行开发，飞行控制部分基于匿名早期裸奔程序架构，采用状态机调度保证不同线程的运行周期，
 对其姿态控制部分进行修改，采用SO3下的旋转矩阵求取外环控制误差，姿态内环采用改进ADRC控制器保证对给的角速度的
@@ -688,8 +697,6 @@ u8 mission_test(float dt)
 自己设计状态跳转条件，状态跳转也可以不采用顺序进行对mission_state直接赋值实现特殊状态处理，该文件下给出了多个Demo实例，可参照其进行修改
 实现SDK开发。
 
-set_pos_task(float x,float y,float z,float dt)
-
 ## 7.2 SDK介绍
 这里给出目前版本中支持的API函数输入和输出详细说明：<br>
 
@@ -789,6 +796,16 @@ hn|长度间隔距离
 spd_limit|飞行速度限制
 z|飞行高度
 完成条件|经过所有航点
+
+## 7.3 常用SDK解析
+### 7.1 自动起飞->航线飞行->自动返航
+
+
+### 7.2 自动起飞->区域搜索->自动返航
+
+
+### 7.3 自动起飞->执行任务->自动返航->视觉降落
+
 
 
 
