@@ -75,11 +75,11 @@ PWM 输出通道|8 通道PWM + 4 路AUX
 
 
 <br><br>
-**飞控外壳**<br>
+**飞控外壳：**<br>
 提供飞控3D打印外壳STL文件，设计为气压计增加缓冲空间并设计了减震球底座。
-<div align=center><img width="340" height="160" src="https://github.com/golaced/Oldx_fly_controller/blob/rmd/support_file/img_file/cap1.JPG"/></div>
-<div align=center><img width="340" height="160" src="https://github.com/golaced/Oldx_fly_controller/blob/rmd/support_file/img_file/cap2.JPG"/></div>
-<div align=center><img width="340" height="160" src="https://github.com/golaced/Oldx_fly_controller/blob/rmd/support_file/img_file/cap3.JPG"/></div>
+<div align=center><img width="260" height="160" src="https://github.com/golaced/Oldx_fly_controller/blob/rmd/support_file/img_file/cap1.JPG"/></div>
+<div align=center><img width="260" height="160" src="https://github.com/golaced/Oldx_fly_controller/blob/rmd/support_file/img_file/cap2.JPG"/></div>
+<div align=center><img width="260" height="160" src="https://github.com/golaced/Oldx_fly_controller/blob/rmd/support_file/img_file/cap3.JPG"/></div>
 
 
 # 4 软件说明
