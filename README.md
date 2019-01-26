@@ -797,16 +797,322 @@ spd_limit|飞行速度限制
 z|飞行高度
 完成条件|经过所有航点
 
+
+<br><br>
+
+target_track_downward_task|下置相机目标跟踪
+-------------|-------------
+target|目标图像信息结构体
+spdz|下降速度
+end_z|下降停止高度  
+mode|模式 MODE_SPD：使用像素偏差  MODE_POS：使用估计的全局位置
+完成条件|达到下降高度
+
+<br><br>
+
+target_track_pan_task|前置云台目标跟踪
+-------------|-------------
+target|目标图像信息结构体
+close_param|速度模式下为云台最小角度  位置模式下为离目标距离
+en_pitch|使能云台俯仰轴对准  
+en_yaw|使能飞行器航向对准
+close_mode|模式 MODE_SPD：使用像素偏差  MODE_POS：使用估计的全局位置
+完成条件|云台达到目标角度或飞行器离目标距离达到设定值
+
+<br><br>
+
+avoid_task|自主避障
+-------------|-------------
+target|目标图像识别结果
+set_x|期望前进X轴速度
+set_y|期望前进Y轴速度
+set_z|NC
+dead|速度死区
+max_spd|最大避障速度
+完成条件|
+
+<br><br>
+
+avoid_way_point_task|航点自主避障
+-------------|-------------
+target|目标图像识别结果
+tar_lat|目标经度
+tar_lon|目标维度
+spd|前进速度
+dead|速度死区
+max_spd|最大避障速度
+mode|模式NC
+完成条件|达到目标位置
+
+<br><br>
+
+set_drone_yaw_task|设置飞行器航向
+-------------|-------------
+yaw|目标航向角
+rate_limit|旋转速度限制
+完成条件|达到目标角度
+
+
+<br><br>
+
+set_drone_z_task|设置飞行器高度
+-------------|-------------
+z|目标高度
+完成条件|达到目标高度
+
+<br><br>
+
+aux_open|辅助通开关设置
+-------------|-------------
+sel|辅助通道
+open|开关
+完成条件|
+
+
+<br><br>
+
+land_task1|降落
+-------------|-------------
+spd|下降速度
+完成条件|达到触地检测标准
+
+<br><br>
+
+delay_task|空闲等待
+-------------|-------------
+delay|等待时间(秒)
+完成条件|达到等待时间
+
+<br><br>
+
+draw_heart|光滑爱心图案
+-------------|-------------
+time|飞行总时间(秒)
+size|爱心尺寸(米)
+完成条件|达到等待时间
+
 ## 7.3 常用SDK解析
 ### 7.1 自动起飞->航线飞行->自动返航
+该SDK为最常用的任务架构，通过在其中添加打断航线飞行的状态判断能快速地实现飞行中对目标识别
+触发的跟踪，或者飞行中看到降落标志触发的自动降落。
 
+```
+u8 takeoff_mission_return(float dt)
+{ 
+	u8 flag=0,mission_finish=0,temp=0;
+	static float mission_time;
 
+	switch(mission_state){
+	case 0:
+			   flag=take_off_task1(5,1.5,dt);//自动起飞以1.5m/s的速度到达5m高度
+		   break;
+	case 1:
+			   flag=delay(2,dt);//在该高度等待2s
+	       break;
+    case 2:
+			   flag=way_point_mission(2,NEN_HEAD_WAY,dt);//以2m/s的速度进行航向飞行期间航向角为航点设定角度
+		   break;
+	case 3:
+			   flag=return_home(15,2,EN_LAND,NEN_HEAD_WAY,dt);//以2m/s的速度从15m的高度反航，进行航向飞行期间航向角为航点设定角度并直接降落
+	break;
+	case 4:mission_finish=1;
+	       break;
+	default:break;
+	}
+	
+	if(flag)
+		mission_state++;
+	
+	mission_time+=dt;
+	
+	if(mission_finish)
+	  return 1;		
+  else
+      return 0;		
+}	
+
+```
 ### 7.2 自动起飞->区域搜索->自动返航
+该SDK是IMAV比赛中一个项目，项目要求如下：起飞前给定参赛选手5分钟前一个伤员的经纬度，无人机需要自主飞行到
+该区域上方基于图像信息判断伤员位置，并将舵机挂钩上的医疗箱投递到伤员5m的半径内，之后自动返航并基于图像精确
+降落在起飞点1m内。
 
+```
+float lat_human,lon_human;//寻找找伤员的经纬度
+u8 mission_search1(float dt)
+{ 
+	u8 flag=0,mission_finish=0,temp=0;
+	float dis=0;
+	static float mission_time;
+	switch(mission_state){
+	case 0:flag=take_off_task1(2,1.5,dt);//自动起飞 
+		    break;
+	case 1:pan_set_task(90,dt);//云台向下
+		   flag=set_drone_z_task(6,dt);//达到起飞高度6m
+		     mission_time=0;
+		     break;	
+  case 2:  mode_oldx.sdk_flag=1;//切换图像识别为伤员      
+		   flag=way_point_mission(1.6,NEN_HEAD_WAY,dt);//开始航线飞行
+	       if(c2c.connect&&c2c.x<160+90&&c2c.x>160-90&&c2c.y<120+90&&c2c.y>120-90)//识别到伤员
+				   cnt_task[5]++;
+				 
+		   if(cnt_task[5]>20&&cnt_task[6]==0)//切换到目标对准
+		  {mission_state=102;cnt_task[0]=cnt_task[1]=cnt_task[2]=cnt_task[5]=flag=0;}
+		     break;
+	case 3://在给定经纬度未找到目标则规划蛇形航线进行搜寻
+				 mode_oldx.sdk_flag=1;
+				 flag=down_ward_search_task_tangle(10,10,3,3,0.6,7.5,dt);
+				 if(c2c.connect&&c2c.x<160+90&&c2c.x>160-90&&c2c.y<120+90&&c2c.y>120-90)//找到伤员
+					 cnt_task[5]++;
+				 
+				 if(cnt_task[5]>6&&cnt_task[6]==0)//找到伤员切换对准状态
+					{mission_state=102;cnt_task[0]=cnt_task[1]=cnt_task[2]=flag=0;}
+					
+				 if(flag&&cnt_task[6]==0)//搜寻完毕后重复直到超时
+				  {mission_state=2;cnt_mission[MISSION_CNT]=cnt_task[5]=cnt_task[0]=cnt_task[1]=cnt_task[2]=flag=0;}
+					
+				 if(cnt_task[6]==1)//完成投递则返航
+					 flag=1;
+	       break;
+  //------------------------------------------------------
+	case 4:flag=return_home(12,2,NEN_LAND,NEN_HEAD_WAY,dt);//返航
+				 if(flag)
+					cnt_task[0]=cnt_task[1]=cnt_task[2]=0;
+	       break;
+	case 5:flag=set_drone_z_task(6,dt);//达到识别降落标志最佳高度
+				 break;
+	case 6:mode_oldx.sdk_flag=0;//切换图像识别为降落标志
+				 flag=target_track_downward_task(&c2c,0.4,0.66,MODE_SPD,dt);//使用下置相机对准降落标志
+				 if(c2c.check)
+				  cnt_task[0]=0;
+				 else
+				  cnt_task[0]++;
+				 
+				 if(cnt_task[0]>10/dt)//降落过程中一直未找到目标则切换搜索模式
+				 {mission_state=11;cnt_task[0]=cnt_task[1]=cnt_task[2]=0;
+				 cnt_mission[C_SEARCH_T_INT]=cnt_mission[C_SEARCH_T_INT1]=flag=0;}
+				
+				 if(cnt_task[1]++>15/dt)
+				 {flag=1;cnt_task[0]=cnt_task[1]=0;}
+				 break;
+	case 7:mode_oldx.sdk_flag=0;
+				 flag=target_track_downward_task(&c2c,0.25,0.66,MODE_SPD,dt);
+	       break;
+	case 8:flag=land_task1(LAND_SPD,dt);//垂直降落
+	       break;
+	case 9:mission_finish=1;
+	       break;
+	//-----------------------AUX MISSION----------------------------
+	case 11://搜索降落标志
+	      mode_oldx.sdk_flag=0;//
+	      flag=down_ward_search_task_tangle(8,8,4,4,0.4,5,dt);//tangle
+			  if(c2c.check)
+					 cnt_task[0]++;
+				
+				if(cnt_task[0]>5)
+					{cnt_task[0]=0;mission_state=6;flag=0;}
+					
+				if(cnt_task[2]++>60/dt||flag)
+				{mission_state=12;cnt_task[2]=0;flag=0;}
+	      break;
+	case 12://搜索一边仍未找到降落标志则直接返航使用起飞点经纬度自动降落
+			 if(return_home(4,0.8,NEN_LAND,NEN_HEAD_WAY,dt))
+					mission_state=7;
+			 break;		 	 			
+	case 13://航线飞行			
+				flag=way_point_mission(1,NEN_HEAD_WAY,dt);	
+        if(flag)
+				{flag=0;aux_open(2,1);mission_state=4;}					
+	break;			
+	//--------------------
+	case 102://对准伤员 达到设定高度后投递医疗包
+		    mode_oldx.sdk_flag=1;//
+		    flag=target_track_downward_task_search(&c2c,0.25,4.5,dt);
+				if(cnt_task[2]++>30/dt)
+				{mission_state=3;cnt_task[2]=flag=cnt_task[5]=0;}
+				
+				if(flag)//投递货物
+				{mission_state=4;//to return home
+				 cnt_task[2]=flag=0;
+				 aux_open(2,1);
+				 cnt_task[6]=1;//drop flag
+				}
+	      break;
+				
+	default:break;
+	}
+	
 
-### 7.3 自动起飞->执行任务->自动返航->视觉降落
+	if(flag)
+		mission_state++;
+	
+	mission_time+=dt;
+	if(mission_time>3*60&&(mission_state>=100||mission_state==3))//任务超时则自动返航
+	{mission_state=13;cnt_mission[C_SEARCH_T_INT]=cnt_mission[C_SEARCH_T_INT1]=0;}
+	
+	if(mission_finish)
+	  return 1;		
+  else
+    return 0;		
+}	
+```
 
+### 7.3 自动起飞->激光雷达避障->自主返航
+该SDK是IMAV比赛中一个项目，项目要求如下：起飞前给定参赛选手5分钟前一个伤员的经纬度，无人机需要资助飞行到
+该区域但与7.2不同的时目标处于密集树林内，因此需要在搜寻时能自动躲避障碍物，则使用2D激光雷达得到飞行器避障速度
+进行前进搜索中不但躲避树木。
 
+```
+
+u8 mission_avoid(float dt)
+{ 
+	u8 flag=0,mission_finish=0,temp=0;
+	float lat,lon;
+	static float mission_time;
+	pan_set_task(90,dt);
+	float dis=0;
+	switch(mission_state){
+	case 0:
+			   flag=take_off_task1(1.68,1.5,dt);//自动起飞
+		    break;
+	case 1:
+				 pan_set_task(90,dt);
+				 flag=set_drone_z_task(1.68,dt);//达到1.6m悬停
+				 lat=navData.missionLegs[LIMIT(navData.Leg_num-1,0,99)].targetLat;//给定经纬度
+				 lon=navData.missionLegs[LIMIT(navData.Leg_num-1,0,99)].targetLon;
+				 mission_time=0;
+		     break;	
+	case 2:
+		     mode_oldx.sdk_flag=1;//图像切换伤员识别
+		     set_drone_z_task(1.5,dt);//期望仿地飞行搜索高度
+			 flag=avoid_way_point_task(&c2c,lat,lon,0.25,0.2,0.5,0,dt);
+			 
+			 if(c2c.check)
+			  cnt_task[0]++;
+			 
+			  if(cnt_task[0]>5){//投递货物
+				  aux_open(2,1);
+				  flag=1;
+				}
+	       break;	
+	case 3:return_home(10,2,EN_LAND,NEN_HEAD_WAY,dt);//自动返航
+	       break;					
+	default:break;
+	}
+	
+	if(flag)
+		mission_state++;
+	
+	mission_time+=dt;
+	if(mission_time>7*60&&(mission_state>100||mission_state==2))//超时返航
+		mission_state=3;
+	
+	if(mission_finish)
+	  return 1;		
+  else
+    return 0;		
+}	
+```
 
 
 # 8 捐赠与项目后续开发计划
