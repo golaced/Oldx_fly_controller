@@ -5,6 +5,30 @@
 #define MED_WIDTH_NUM 11
 #define MED_FIL_ITEM  5
 
+
+void DigitalLPF(float in, float* out, float cutoff_freq, float dt) {
+	  float input_reg=in;
+    if (cutoff_freq <= 0.0f || dt <= 0.0f) {
+        *out = input_reg;
+    }
+    float rc = 1.0f/(2*3.1415926*cutoff_freq);
+    float alpha = LIMIT(dt/(dt+rc), 0.0f, 1.0f);
+    *out += (input_reg - *out) * alpha;
+}
+
+float DigitalLPF_NEW(float in, float out, float cutoff_freq, float dt) {
+	  float input_reg=in;
+	  float out_reg=out;
+    if (cutoff_freq <= 0.0f || dt <= 0.0f) {
+        return input_reg;
+    }
+    float rc = 1.0f/(2*3.1415926*cutoff_freq);
+    float alpha = LIMIT(dt/(dt+rc), 0.0f, 1.0f);
+    out_reg += (input_reg - out) * alpha;
+		return out_reg;	
+}
+
+
 float med_filter_tmp[MED_FIL_ITEM][MED_WIDTH_NUM ];
 float med_filter_out[MED_FIL_ITEM];
 

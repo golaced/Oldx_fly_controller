@@ -20,7 +20,7 @@
 //extern void KF_OLDX_NAV(double X[3], double P[9], const double Z[3], double U,
 //  const double A[9], const double B[3], const double H[9], double ga, double gwa,
 //  double g_pos, double g_spd, double T,const double X_delay[4]);
-extern void KF_OLDX_NAV(double X[4], double P[9], const double Z[3], double U,
+extern int KF_OLDX_NAV(double X[4], double P[9], const double Z[3], double U,
   const double A[9], const double B[3], const double H[9], const double H_x2[3], double ga, double gwa,
   double g_pos, double g_spd, double T, int X_delay,const double X_delaym[4]);
 extern void KF_OLDX_NAV_initialize(void);

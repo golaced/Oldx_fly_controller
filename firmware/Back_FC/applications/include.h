@@ -27,13 +27,12 @@ extern int id_chip;
 //#define M_DRONE_380X4  //IMAV SEARCH 2
 #define IMAV2 154
 
-//#define M_DRONE_380X4S2  //IMAV MAP 3
-//#define IMAV3 113
+//#define M_DRONE_380X4S2  //IMAV MAP 3  MINE
 #define IMAV3 96
 
-
+#define HANX6_BIGX6
 //#define HANX6_BIG
-#define HANX6//MINU
+//#define HANX6//MINI
 //#define M_DRONE250X4
 //#define M_DRONE_330X6
 //#define M_DRONE_330 
@@ -62,8 +61,11 @@ extern int id_chip;
 #define FLASH_USE_STM32 0 
 #define YAW_INVER 	 0														//YAW反向控制
 #define YAW_FC 0
-#define MAX_CTRL_ANGLE			15.0f										//遥控能达到的最大角度
+#define MAX_CTRL_ANGLE			12.0f										//遥控能达到的最大角度
 #define MAX_CTRL_YAW_SPEED_RC 120										//遥控器Yaw速度限制
+#define MAX_THR       80 			///%	油门通道最大占比80%，留20%给控制量
+
+#define PIT_GAIN_INIT 1 
 
 #define ESO_AI 2.2
 #define ESO_YI 0
@@ -71,6 +73,42 @@ extern int id_chip;
 #define TRAJ1_1  2//2 circle 1 line  3 way points   4 jerk  5 car
 #define HOLD_THR_PWM  LIMIT(480,0,500)
 #endif
+
+//-----------------------------------------------------------------------
+#if defined(HANX6_BIGX6)
+#define PX4_SDK 0  //PX4 外部控制
+#define USE_MINI_FC_FLOW_BOARD 0 //使用MINI——OLDX——FLOW板子
+#define USE_VER_8_PWM 1  //Car and new boardVer F2
+#define USE_VER_8 0  //Car and new boardVer F2
+#define USE_VER_7 1
+#define USE_OLDX_REMOTE 0
+
+//#define BLDC_PAN
+#define W2C_MARK
+#define USE_CIRCLE 0
+//#define USE_LED 
+#define AUTO_MISSION    //使用自动任务API
+
+//#define USE_KF	
+#define USE_UWB
+#define MAXMOTORS 		(6)		//电机数量
+#define FLASH_USE_STM32 0 
+#define YAW_INVER 	 0														//YAW反向控制
+#define YAW_FC 1
+#define MAX_CTRL_ANGLE			15.0f										//遥控能达到的最大角度
+#define MAX_CTRL_YAW_SPEED_RC 200										//遥控器Yaw速度限制
+#define CAMERA_INVERT 0
+#define MAX_THR       80 			///%	油门通道最大占比80%，留20%给控制量
+
+#define ESO_AI 0
+#define ESO_YI 0
+#define PIT_GAIN_INIT 1
+//
+#define TRAJ1_1  2//2 circle 1 line  3 way points   4 jerk  5 car
+#define HOLD_THR_PWM  LIMIT(400,0,500)
+#endif
+
+
 //-----------------------------------------------------------------------
 #if defined(HANX6)
 #define PX4_SDK 0  //PX4 外部控制
@@ -90,14 +128,16 @@ extern int id_chip;
 #define USE_UWB
 #define MAXMOTORS 		(6)		//电机数量
 #define FLASH_USE_STM32 0 
-#define YAW_INVER 	 1														//YAW反向控制
-#define YAW_FC 0
-#define MAX_CTRL_ANGLE			25.0f										//遥控能达到的最大角度
+#define YAW_INVER 	 0														//YAW反向控制
+#define YAW_FC 1
+#define MAX_CTRL_ANGLE			15.0f										//遥控能达到的最大角度
 #define MAX_CTRL_YAW_SPEED_RC 200										//遥控器Yaw速度限制
 #define CAMERA_INVERT 0
+#define MAX_THR       80 			///%	油门通道最大占比80%，留20%给控制量
 
-#define ESO_AI 8.8
+#define ESO_AI 3.5
 #define ESO_YI 0
+#define PIT_GAIN_INIT 1.5
 //
 #define TRAJ1_1  2//2 circle 1 line  3 way points   4 jerk  5 car
 #define HOLD_THR_PWM  LIMIT(400,0,500)
@@ -182,21 +222,23 @@ extern int id_chip;
 //#define USE_CARGO 
 #define AUTO_MISSION    //使用自动任务API
 
-#define USE_KF	
+//#define USE_KF	
 #define USE_UWB
 #define MAXMOTORS 		(4)		//电机数量
 #define FLASH_USE_STM32 0 
 #define YAW_INVER 	  0														//YAW反向控制
 #define YAW_FC 0
-#define MAX_CTRL_ANGLE			18.0f										//遥控能达到的最大角度
-#define MAX_CTRL_YAW_SPEED_RC 200										//遥控器Yaw速度限制
+#define MAX_CTRL_ANGLE			30.0f										//遥控能达到的最大角度
+#define MAX_CTRL_YAW_SPEED_RC 300										//遥控器Yaw速度限制
 #define CAMERA_INVERT 1
+#define MAX_THR       80 			///%	油门通道最大占比80%，留20%给控制量
 
-#define ESO_AI 22
+#define PIT_GAIN_INIT 1
+#define ESO_AI 30
 #define ESO_YI 22
 //
 #define TRAJ1_1  2//2 circle 1 line  3 way points   4 jerk  5 car
-#define HOLD_THR_PWM  LIMIT(550,0,550)
+#define HOLD_THR_PWM  LIMIT(450,0,550)
 #endif
 //-----------------------------------------------------------------------
 #if defined(M_DRONE_330X6)
@@ -395,7 +437,6 @@ extern int id_chip;
 #define CTRL_1_INT_LIMIT 		0.5f *MAX_CTRL_ASPEED		//内环积分幅度
 
 #define MAX_PWM				100			///%	最大PWM输出为100%油门
-#define MAX_THR       80 			///%	油门通道最大占比80%，留20%给控制量
 #define READY_SPEED   20			///%	解锁后电机转速20%油门
 //=========================================
 extern float att_test[2];

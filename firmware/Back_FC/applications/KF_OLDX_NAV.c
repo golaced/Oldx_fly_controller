@@ -176,7 +176,7 @@ static double rt_powd_snf(double u0, double u1)
 float pos_buf[3][4][10];
 int sample_cnt[3];
 
-void KF_OLDX_NAV(double X[4], double P[9], const double Z[3], double U, const
+int  KF_OLDX_NAV(double X[4], double P[9], const double Z[3], double U, const
                  double A[9], const double B[3], const double H[9],const double H_x2[3], double ga,
                  double gwa, double g_pos, double g_spd, double T, int X_delay, const double X_delaym[4])
 {
@@ -219,19 +219,24 @@ void KF_OLDX_NAV(double X[4], double P[9], const double Z[3], double U, const
   }
   }
 	// store history statement
-	if(X_delaym[3]==2||X_delaym[3]==5)
 	if(sample_cnt[X_delay]++>0){
-	sample_cnt[X_delay]=0;
-	for(i0=10-1;i0>0;i0--)
-	{
-	pos_buf[X_delay][0][i0]=pos_buf[X_delay][0][i0-1];
-	pos_buf[X_delay][1][i0]=pos_buf[X_delay][1][i0-1];			
-	pos_buf[X_delay][2][i0]=pos_buf[X_delay][2][i0-1];			
-	}
-	pos_buf[X_delay][0][0]=X_pre[0];
-	pos_buf[X_delay][1][0]=X_pre[1];
-	pos_buf[X_delay][2][0]=X_pre[2];	
+		sample_cnt[X_delay]=0;
+		for(i0=10-1;i0>0;i0--)
+		{
+		pos_buf[X_delay][0][i0]=pos_buf[X_delay][0][i0-1];
+		pos_buf[X_delay][1][i0]=pos_buf[X_delay][1][i0-1];			
+		pos_buf[X_delay][2][i0]=pos_buf[X_delay][2][i0-1];			
+		}
+		pos_buf[X_delay][0][0]=X_pre[0];
+		pos_buf[X_delay][1][0]=X_pre[1];
+		pos_buf[X_delay][2][0]=X_pre[2];	
   }
+	
+	if(H[0]==0&&H[4]==0){//no measurement		
+		for (i0 = 0; i0 < 3; i0++) 
+		 X[i0] = X_pre[i0];
+	}
+	 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%/			
   //ÏÈÑéP P(k|k-1)=A P(k-1|k-1) A’+Q 
 	#if I_Q
@@ -328,14 +333,6 @@ void KF_OLDX_NAV(double X[4], double P[9], const double Z[3], double U, const
 					}
 				}
 				
-	//Ã»´«¸ÐÆ÷Ê±Ö»×öÊ±¼ä¸üÐÂ  			
-	if(H[0]==0&&H[4]==0){		
-		for (i0 = 0; i0 < 9; i0++)
-		 P[i0]=P_pre[i0];
-   
-		for (i0 = 0; i0 < 3; i0++) 
-		 X[i0] = X_pre[i0];}
-   else{
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Measurement Correct%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%/				
   //¼ÆËãkalmanÔöÒæ Kg(k)= P(k|k-1) H' / (H P(k|k-1) H + R) 
 					inv(b_H, b_A);
@@ -350,7 +347,7 @@ void KF_OLDX_NAV(double X[4], double P[9], const double Z[3], double U, const
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%/								
   //×´Ì¬ÐÞÕý X(k|k)= X(k|k-1)+Kg(k) (Z(k)-H X(k|k-1+delay)) 	
 			float x_pre_use[3],Z_delay[3],z_use[3];					
-			if((X_delaym[3]==2||X_delaym[3]==4)&&((int)X_delaym[0]>0||(int)X_delaym[1]>0||(int)X_delaym[2]>0)){//correct delay			
+			if(X_delaym[3]==4&&((int)X_delaym[0]>0||(int)X_delaym[1]>0||(int)X_delaym[2]>0)){//use delay state		
 				x_pre_use[0] = pos_buf[X_delay][0][(int)X_delaym[0]];
 				x_pre_use[1] = pos_buf[X_delay][1][(int)X_delaym[1]];	
 				x_pre_use[2] = pos_buf[X_delay][2][(int)X_delaym[2]];	
@@ -360,15 +357,20 @@ void KF_OLDX_NAV(double X[4], double P[9], const double Z[3], double U, const
 				x_pre_use[1] = X_pre[1];	
 				x_pre_use[2] = X_pre[2];			
 			}	
-			z_use[0]=Z[0];z_use[1]=Z[1];z_use[2]=Z[2];
-			if((X_delaym[3]==5)&&((int)X_delaym[0]>0||(int)X_delaym[1]>0||(int)X_delaym[2]>0)){
+			
+			if(X_delaym[3]==5&&((int)X_delaym[0]>0||(int)X_delaym[1]>0||(int)X_delaym[2]>0)){//correct the measurement
 			Z_delay[0]=X_pre[0]-pos_buf[X_delay][0][(int)X_delaym[0]];
 			Z_delay[1]=X_pre[1]-pos_buf[X_delay][1][(int)X_delaym[1]];
 			Z_delay[2]=X_pre[2]-pos_buf[X_delay][2][(int)X_delaym[2]];
 			z_use[0]+=LIMIT(Z_delay[0],-1,1);
 			z_use[1]+=LIMIT(Z_delay[1],-0.3,0.3);
 			z_use[2]+=Z_delay[2];	
+			}else
+			{
+				z_use[0]=Z[0];z_use[1]=Z[1];z_use[2]=Z[2];
 			}
+			
+			
 			for (i0 = 0; i0 < 3; i0++) {
 						c_H[i0] = 0.0;
 						for (i1 = 0; i1 < 3; i1++) {
@@ -433,21 +435,6 @@ void KF_OLDX_NAV(double X[4], double P[9], const double Z[3], double U, const
 							}
 						}
 					}	
-				}	//end measure correct
-	 
-		if(X_delaym[3]==4)
-		if(sample_cnt[X_delay]++>0){
-		sample_cnt[X_delay]=0;
-		for(i0=10-1;i0>0;i0--)
-		{
-		pos_buf[X_delay][0][i0]=pos_buf[X_delay][0][i0-1];
-		pos_buf[X_delay][1][i0]=pos_buf[X_delay][1][i0-1];			
-		pos_buf[X_delay][2][i0]=pos_buf[X_delay][2][i0-1];			
-		}
-		pos_buf[X_delay][0][0]=X[0];
-		pos_buf[X_delay][1][0]=X[1];
-		pos_buf[X_delay][2][0]=X[2];	
-		}
 }
 /*
  * Arguments    : void

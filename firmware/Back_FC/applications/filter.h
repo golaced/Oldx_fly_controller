@@ -15,7 +15,8 @@ typedef struct
 	float out;
 } _filter_1_st;
 
-
+extern void DigitalLPF(float in, float* out, float cutoff_freq, float dt);
+extern float DigitalLPF_NEW(float in, float out, float cutoff_freq, float dt);
 void Moving_Average1(float in,float moavarray[],u16 len ,u16 fil_cnt[2],float *out);
 void Moving_Average(float moavarray[],u16 len ,u16 *fil_cnt,float in,float *out);
 float Moving_Median(u8 item,u8 width_num,float in);

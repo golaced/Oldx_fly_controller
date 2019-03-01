@@ -103,6 +103,7 @@ void Duty_2ms()
 	
 	if(cnt_init++>2/0.002){cnt_init=65530;
   if(!init_beep[0])init_beep[0]=1;
+	module.system=1;
  	IMUupdate(0.5f *inner_loop_time,mpu6050_fc.Gyro_deg.x, mpu6050_fc.Gyro_deg.y, mpu6050_fc.Gyro_deg.z, mpu6050_fc.Acc.x, mpu6050_fc.Acc.y, mpu6050_fc.Acc.z
 	,&Rol_fc1,&Pit_fc1,&Yaw_fc1);
 		#if PX4_SDK
@@ -149,7 +150,7 @@ void Duty_5ms()
 }
 
 
-u8 UART_UP_LOAD_SEL=11;//<------------------------------上传数据选择
+u8 UART_UP_LOAD_SEL=0;//<------------------------------上传数据选择
 u8 UART_UP_LOAD_SEL_FORCE=0;//<--上位机强制选择
 u8 force_flow_ble_debug;
 u8 flow_debug_stop=1;
@@ -270,7 +271,7 @@ void Duty_10ms()
 											case 0://气压计融合
 											data_per_uart1(
 											ALT_POS_BMP_UKF_OLDX*100,hc_value.fusion_height/10,baro.h_flt*100,
-											ALT_VEL_BMP_UKF_OLDX*100,acc_body[2]*100,wz_speed_pid_v.exp/10,
+											ALT_VEL_BMP_UKF_OLDX*100,acc_body[2]*10,wz_speed_pid_v.exp/10,
 											ALT_VEL_BMP*100,nmda[2]*100,ALT_POS_SONAR2*100,
 											(int16_t)(Yaw_fc*10),(int16_t)(Pit_fc*10.0),(int16_t)(Rol_fc*10.0),thr_value,0,0/10,0);break;	
 											case 1://速度，加速度，高度和控制
@@ -516,6 +517,7 @@ void Duty_20ms()
 		else
 		baro_task_time=temp1;
 
+		WindEstimate(baro_task_time);
 		baro_ctrl(baro_task_time,&hc_value);//高度融合		
 		Positon_control1(baro_task_time);//位置控制	
 		//OLDX_REMOTE

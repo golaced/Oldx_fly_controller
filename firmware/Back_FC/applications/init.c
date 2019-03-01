@@ -185,7 +185,7 @@ u8 All_Init()
 	
 	mode_oldx.en_auto_home=1;//使用一键返航
 	mode_oldx.auto_fly_up=1;//使用自动起飞
-	mode_oldx.rc_loss_return_home=2;//使能油门丢失0-> shut motor 1->return home 2->directland  3->ignore
+	mode_oldx.rc_loss_return_home=1;//使能油门丢失0-> shut motor 1->return home 2->directland  3->ignore
 	
 	three_wheel_car.car_mode=3;//3circle 2forwad
 	three_wheel_car.gain[0]=1;//spd

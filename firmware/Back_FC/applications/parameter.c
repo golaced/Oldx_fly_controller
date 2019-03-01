@@ -49,6 +49,14 @@ void Para_ResetToFactorySetup(void)
     pid_att_in[2]=6;
  
     pid_att_out_yaw[2]=0.8;
+ #elif  defined(HANX6)
+//    pid_att_out[0]=0.486;
+//    pid_att_out[2]=0.7;
+    pid_att_in[2]=3.5;
+ #elif  defined(HANX6_BIGX6)
+    pid_att_out[0]=0.368;
+    pid_att_in[1]=0.4;
+    pid_att_in[2]=4.5;
  #endif
  //adrc
  eso_att_inner_c[PITr].eso_dead=eso_att_inner_c[ROLr].eso_dead=eso_att_inner_c[YAWr].eso_dead=0.268;

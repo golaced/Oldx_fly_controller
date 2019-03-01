@@ -57,8 +57,8 @@ float ALT_POS_BMP_UKF_OLDX,ALT_VEL_BMP_UKF_OLDX,ALT_ACC_BMP_UKF_OLDX;
 double P_kf_baro[9]={100,0,0,0,100,0,0,0,100}; 
 double X_kf_baro[4];
 //float g_spd=0.05;
-float ga=0.1;
-float gwa=0.1;
+float ga=0.01;
+float gwa=0.2;
 
 //float gh_bmp=0.1;
 //float g_spd=0.168;
@@ -74,11 +74,11 @@ float gwa=0.1;
 
 float gh_bmp=0.1; 
 float g_spd=0.5;
-double pos_delay[4]={1,4,0,0};
+double pos_delay[4]={1,2,0,4};//4×´Ì¬ÐÞÕý   5Á¿²âÐÞÕý
 int bmp_x2=200;//35;//23;
 u8 en_x2_check=0;
-
-
+float FLT_BARO=1;
+float FLT_ACC=20;
 //float gh_bmp=0.1;
 //float g_spd=0.85;
 //double pos_delay[4]={1,4,0,5};
@@ -143,8 +143,8 @@ float posz_sonar=LIMIT(ultra.relative_height+tilted_fix_sonar,0,8);
 	static float baro_av_arr_fu[BARO_AV_NUM_FU];
 	static  u16 baro_av_cnt_fu;
 	baro.h_origin=((float)(baro.relative_height)/1000.+off_bmp_sonar);
-	baro.h_flt=firstOrderFilter((baro.h_origin) ,&firstOrderFilters[BARO_LOWPASS],T);
-
+	//baro.h_flt=firstOrderFilter((baro.h_origin) ,&firstOrderFilters[BARO_LOWPASS],T);
+  DigitalLPF(baro.h_origin,&baro.h_flt,FLT_BARO,T);
 
 float baro_com_val;
 #if EN_ATT_CAL_FC
@@ -168,8 +168,8 @@ posz=(float)(baro.h_origin);
 		static float wz_acc ;
 		static u16 ekf_init_cnt;
 
-		acc_body_temp[2] = firstOrderFilter(acc_body_temp_flt[2]-9.8 ,&firstOrderFilters[ACC_LOWPASS_Z],T);
-			  	 				
+		//acc_body_temp[2] = firstOrderFilter(acc_body_temp_flt[2]-9.8 ,&firstOrderFilters[ACC_LOWPASS_Z],T);
+			 				
 		if(NS==0||1)
 	  acc_off_baro=0;
 		else if((!fly_ready&&NS==2))		
@@ -180,8 +180,8 @@ posz=(float)(baro.h_origin);
 			acc_off_baro += ( 1 / ( 1 + 1 / ( 3*0.6f *3.14f *T ) ) ) *(acc_body_temp[2]- acc_off_baro) ;
 			acc_off_baro=LIMIT(acc_off_baro,-3,3);
 		}
-
-    acc_body[2]=(acc_body_temp[2]-acc_off_baro*0);
+    acc_body[2]=DigitalLPF_NEW(acc_body_temp_flt[2]-9.8,acc_body[2],FLT_ACC,T);	   
+   // acc_body[2]=(acc_body_temp[2]-acc_off_baro*0);
 
 		#if defined(USE_KF)
 		double A[9]=

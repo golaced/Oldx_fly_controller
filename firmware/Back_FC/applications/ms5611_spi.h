@@ -18,3 +18,6 @@ void MS5611_ThreadNew_SPI(void) ;
 
 extern int32_t ms5611Press,ms5611Temp;
 extern float   ms5611Alt;
+
+extern float windSpeed,windSpeedAcc;
+void WindEstimate(float dt);

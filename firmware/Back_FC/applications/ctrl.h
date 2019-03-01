@@ -61,7 +61,7 @@ void All_Out(float x,float y,float z,float T);
 extern u8 Thr_Low,force_Thr_low;
 extern float Thr_Weight,thr_view;
 extern s16 motor_out[MAXMOTORS];
-extern float thr_value;
+extern float thr_value,k_pitch;
 extern xyz_f_t except_A ;
 
 #define YAW_ERO_MAX 45

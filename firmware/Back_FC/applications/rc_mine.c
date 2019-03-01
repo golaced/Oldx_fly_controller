@@ -592,7 +592,8 @@ void param_copy_pid(void){
 	ctrl_1.PID[PIDPITCH].kd= ctrl_1.PID[PIDROLL].kd  = 0.001*PARAM[0][2];
 	eso_att_inner_c[ROLr].b0=eso_att_inner_c[PITr].b0= 			0.1*PARAM[1][0];
 	eso_att_inner_c[YAWr].b0  											 = 			0.1*PARAM[1][1];
-	eso_att_inner_c[ROLr].eso_dead=eso_att_inner_c[PITr].eso_dead=   PARAM[1][2]*0.001;
+	//eso_att_inner_c[ROLr].eso_dead=eso_att_inner_c[PITr].eso_dead=   PARAM[1][2]*0.001;
+	k_pitch=   PARAM[1][2]*0.01;
 	ctrl_1.PID[PIDYAW].kp 	= 0.001*PARAM[2][0];
 	ctrl_1.PID[PIDYAW].ki 	= 0.001*PARAM[2][1];
 	ctrl_1.PID[PIDYAW].kd 	= 0.001*PARAM[2][2];
@@ -668,7 +669,8 @@ void pid_copy_param(void){
 
 	PARAM[1][0]=eso_att_inner_c[PITr].b0*10;
 	PARAM[1][1]=eso_att_inner_c[YAWr].b0*10;
-	PARAM[1][2]=eso_att_inner_c[ROLr].eso_dead*1000;
+	//PARAM[1][2]=eso_att_inner_c[ROLr].eso_dead*1000;
+	PARAM[1][2]=k_pitch*100;
 	PARAM[2][0]=ctrl_1.PID[PIDYAW].kp *1000;
 	PARAM[2][1]=ctrl_1.PID[PIDYAW].ki *1000;
 	PARAM[2][2]=ctrl_1.PID[PIDYAW].kd *1000;

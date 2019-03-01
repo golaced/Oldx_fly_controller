@@ -144,7 +144,7 @@ void Play_Music_Direct(u8 sel)
 	  break;
 		case START_BEEP:
 		music_sel=	START_BEEP;
-		Play_Music(start_music_windows,0,sizeof(start_music_windows)/2);	
+		Play_Music(start_music_px4,0,sizeof(start_music_px4)/2);	
 		break;
 		case MEMS_ERROR_BEEP:
 		Play_Music(mems_error_music,0,sizeof(mems_error_music)/2);		

@@ -66,10 +66,10 @@ void WZ_Speed_PID_Init()
 	//------------------------------安全模式PID初始化
 		wz_speed_pid_safe.kp = 0.5;
 		wz_speed_pid_safe.ki = 0.2;
-		wz_speed_pid_safe.kd = 1.68; 
+		wz_speed_pid_safe.kd = 1.68;//1.68; 
 	  wz_speed_pid_use.fp=0.2;
 	//adrc
-	  eso_pos_spd[Zr].b0=15;
+	  eso_pos_spd[Zr].b0=15;//15
 	  eso_pos_spd[Zr].eso_dead=0.01*1000;	
 	  eso_pos_spd[Zr].eso_for_z=1;
 }

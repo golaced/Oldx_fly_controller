@@ -333,6 +333,8 @@ void Positon_control1(float T)// Œª÷√øÿ÷∆ Drone 330
 		nav_spd_pid.kp=0.1086;//0.33;//
 		#elif defined(HANX6)
 		nav_spd_pid.kp=0.17;//0.33;//
+		#elif defined(HANX6_BIGX6)
+		nav_spd_pid.kp=0.17;//0.33;//
 		#else
 		nav_spd_pid.kp=0.33;//
 		#endif		

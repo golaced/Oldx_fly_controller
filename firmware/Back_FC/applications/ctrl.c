@@ -365,14 +365,13 @@ void Thr_Ctrl(float T)
 	if(!fly_ready&&500 + CH_filter[THRr]<200)
 	force_Thr_low=0;
 	#if USE_OLDX_REMOTE
-	if(((fabs(ctrl_2.err.x)>1.15*MAX_CTRL_ANGLE||fabs(ctrl_2.err.y)>1.15*MAX_CTRL_ANGLE||fabs(Pit_fc)>60||fabs(Rol_fc)>60)&&
-	fly_ready&&mode_oldx.att_pid_tune==0)||(NS==0&&fly_ready&&!mode_oldx.rc_loss_return_home))
+	if(((fabs(ctrl_2.err.x)>1.68*MAX_CTRL_ANGLE||fabs(ctrl_2.err.y)>1.68*MAX_CTRL_ANGLE||fabs(Pit_fc)>70||fabs(Rol_fc)>70)&&
+	fly_ready&&mode_oldx.att_pid_tune==0&&height_ctrl_mode==0
+	  )||(NS==0&&fly_ready&&!mode_oldx.rc_loss_return_home))
 	#else
-	if(((fabs(ctrl_2.err.x)>1.15*MAX_CTRL_ANGLE||fabs(ctrl_2.err.y)>1.15*MAX_CTRL_ANGLE||fabs(Pit_fc)>60||fabs(Rol_fc)>60)&&
-    fly_ready&&mode_oldx.att_pid_tune==0)||(fly_ready&&!Rc_Get_PWM.update&&mode_oldx.rc_loss_return_home==0))
-	
-//	if(((fabs(ctrl_2.err.x)>1.15*MAX_CTRL_ANGLE||fabs(ctrl_2.err.y)>1.15*MAX_CTRL_ANGLE||fabs(Pit_fc)>60||fabs(Rol_fc)>60)&&
-//    fly_ready&&mode_oldx.att_pid_tune==0)||(fly_ready&&!Rc_Get_PWM.update&&KEY[0]==1))
+	if(((fabs(ctrl_2.err.x)>1.68*MAX_CTRL_ANGLE||fabs(ctrl_2.err.y)>1.68*MAX_CTRL_ANGLE||fabs(Pit_fc)>70||fabs(Rol_fc)>70)&&
+    fly_ready&&mode_oldx.att_pid_tune==0&&height_ctrl_mode==0
+	  )||(fly_ready&&!Rc_Get_PWM.update&&mode_oldx.rc_loss_return_home==0))
 	#endif
 		cnt_for_low++;
 	else
@@ -380,7 +379,7 @@ void Thr_Ctrl(float T)
 	
 	u8 init_flag;
 	init_flag=sys_init.baro_ekf;
-	if(cnt_for_low>5/T)
+	if(cnt_for_low>2.5/T)
 		force_Thr_low=1;
 //protect flag init	
 //	if(fly_ready_r==0&&fly_ready==1&&CH_filter[THRr]>0)
@@ -439,6 +438,7 @@ float posture_value[MAXMOTORS];
 s16 motor_out[MAXMOTORS];
 s16 motor_out_test1[MAXMOTORS];
 float view_out[3];
+float k_pitch=PIT_GAIN_INIT;
 void All_Out(float out_roll,float out_pitch,float out_yaw,float T)
 {
 
@@ -456,12 +456,12 @@ void All_Out(float out_roll,float out_pitch,float out_yaw,float T)
 	
 #elif (MAXMOTORS == 6)
 	//0.866 == sqrt(3)/2    4/6 == 0.667f
-	#if defined(HANX6)||defined(HANX6_BIG)
-	posture_value[0] = - 1 *out_roll*0.5 + out_pitch + 0.5 *out_yaw ;
-	posture_value[1] = + 1 *out_roll*0.5 + out_pitch - 0.5 *out_yaw ;
+	#if defined(HANX6)||defined(HANX6_BIG)||defined(HANX6_BIGX6)
+	posture_value[0] = - 1 *out_roll*0.5 + out_pitch* k_pitch + 0.5 *out_yaw ;
+	posture_value[1] = + 1 *out_roll*0.5 + out_pitch* k_pitch - 0.5 *out_yaw ;
 	posture_value[2] = + 1 *out_roll*0.5             + 1  *out_yaw ;
-	posture_value[3] = + 1 *out_roll*0.5 - out_pitch - 0.5 *out_yaw ;
-	posture_value[4] = - 1 *out_roll*0.5 - out_pitch + 0.5 *out_yaw ;
+	posture_value[3] = + 1 *out_roll*0.5 - out_pitch* k_pitch - 0.5 *out_yaw ;
+	posture_value[4] = - 1 *out_roll*0.5 - out_pitch* k_pitch + 0.5 *out_yaw ;
 	posture_value[5] = - 1 *out_roll*0.5             - 1  *out_yaw ;
 	#else
 	posture_value[0] = - 0.866f *out_roll + out_pitch + 0.667f *out_yaw ;

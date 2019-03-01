@@ -111,6 +111,52 @@ void requestPressure()
     DISABLE_MS5611;
 }
 
+float windSpeed,windSpeedAcc;
+void WindEstimate(float dt)
+{
+    float angle[2];
+    static float tiltAngle;
+    static float lastWindSpeed;
+
+    static uint64_t previousT;
+    float deltaT = dt;
+
+    //?????????????????????????
+
+    if(fabs(CH_filter[ROL])<25&&fabs(CH_filter[PIT])<25)
+    {
+        //??????, ?????
+        angle[0] = my_deathzoom_21(Pit_fc, 3);
+        angle[1] = my_deathzoom_21(Rol_fc, 3);
+        tiltAngle = tiltAngle * 0.995f + sqrt(angle[0]*angle[0]+angle[1]*angle[1]) * 0.005f;
+
+        //????????????
+        windSpeed = 100 * sinf(tiltAngle*0.0173);
+
+        //??????,?????
+        windSpeedAcc = windSpeedAcc * 0.95f + ((windSpeed - lastWindSpeed) / deltaT) * 0.05f;
+        lastWindSpeed = windSpeed;
+    }
+    else
+    {
+        windSpeed    -= windSpeed * 0.005f;
+        windSpeedAcc -= windSpeedAcc * 0.005f;
+    }
+
+}
+
+int16_t BaroCompensate(void)
+{
+    int16_t velocity;
+
+    if((m100.navigation_mode==2&&m100.GPS_STATUS<6)||(m100.navigation_mode==1&&m100.GPS_STATUS<50))
+        return 0;
+
+    velocity = sqrt(VEL_UKF_Y*VEL_UKF_Y+VEL_UKF_X*VEL_UKF_X);
+    velocity = my_deathzoom_21(LIMIT(velocity, 0, 0.5), 0.02);
+
+    return - velocity * 0.05f;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Calculate Pressure Altitude
@@ -178,7 +224,11 @@ void calculatePressureAltitude(int32_t *pressure, int32_t *temperature)
    ms5611Alt= (44330.0f * (1.0f - pow((float)p / Alt_offset_Pa, 1.0f / 5.255f)));
 	// ms5611Alt = 4433000.0 * (1 - pow((p / Alt_offset_Pa), 0.1903))*0.01f;  
    
-	 
+	int baroAltTemp;
+	baroAltTemp=BaroCompensate();
+
+	//????????
+	ms5611Alt = ms5611Alt ;//* 0.5f + baroAltTemp * 0.5f; 
 }
 
 ///////////////////////////////////////////////////////////////////////////////
