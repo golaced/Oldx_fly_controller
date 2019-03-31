@@ -1127,7 +1127,7 @@ u8 mission_avoid(float dt)
 
 # 8 捐赠与项目后续开发计划
 ____如果您觉得该项目对您有帮助，也为了更好的项目推进和软硬件更新，如果愿意请通过微信捐赠该项目！
-<div align=center><img width="240" height="300" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/pay.png"/></div>
+<div align=center><img width="440" height="300" src="https://github.com/golaced/Oldx_fly_controller/blob/master/support_file/img_file/pay.png"/></div>
 
 
 
